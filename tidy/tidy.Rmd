@@ -33,18 +33,18 @@ output:
 knitr::opts_chunk$set(echo = FALSE, cache=TRUE, messages=FALSE, warning=FALSE)
 # Make sure you have the latest versions of rmarkdown and bookdown installed
 library(ggplot2)
+library(tidyverse)
+hotels <- read.csv("data/hotels.csv")
 ```
 
+```{r check NA}
+Miss_tidy <- sapply(hotels, function(x) sum(is.na(x))) #check wether have mssing value in data set
+Miss_tidy
 
-# Introduction
-
-In a famous paper, @BC64 introduced a family of transformations \dots
-
-```{r histogram, fig.cap="Nice histogram", message=FALSE, warning=FALSE}
-qplot(exp(rnorm(200)))
+```
+```{r clean missing}
+hotel <- na.omit(hotels)
 ```
 
-Consider the logNormal data plotted in Figure \ref{fig:histogram}.
-
-$$s^2 = \sum_{i=1}^n (x_i-\bar{x})^2$$
+```
 
