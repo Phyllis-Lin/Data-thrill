@@ -1,0 +1,16 @@
+---
+title: "project"
+author: "Peimin Lin"
+date: "20/10/2020"
+output: html_document
+---
+
+```{r setup}
+library(tidyverse)
+hotel <- read_csv("Data/tidy.csv") %>% dplyr::select(-X1)
+```
+
+```{r}
+
+```
+
