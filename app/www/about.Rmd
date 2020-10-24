@@ -1,0 +1,22 @@
+---
+title: "Hotel Bookings"
+author: "Data Thrills"
+date: "24/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## About
+
+This dashboard was created as part of ETC5510
+
+## Authors
+
+* Panagiotis Stylinaos [](https://panagiotis-stylianos.netlify.app)
+*
+*
+
+## References
