@@ -7,10 +7,62 @@ output: html_document
 
 ```{r setup}
 library(tidyverse)
+library(rpart)
+library(MASS)
+library(broom)
+library(ggResidpanel)
+library(fmsb)
 hotel <- read_csv("Data/tidy.csv") %>% dplyr::select(-X1)
 ```
 
+```{r select}
+booking <- hotel %>% dplyr::select(lead_time,
+                                 adr,
+                                 is_canceled,
+                                 reserved_room_type,
+                                 assigned_room_type,
+                                 arr_date_month) %>%
+  filter(is_canceled == 0)
+```
+
+
+
 ```{r}
+type <- booking %>% 
+  filter(!reserved_room_type == assigned_room_type) %>%
+  group_by(reserved_room_type,assigned_room_type) %>%
+  count( name = "Number")
 
 ```
+
+```{r check NA}
+Missing <- sapply(type, function(x) sum(is.na(x))) #check wether have mssing value in data set
+Missing
+```
+
+```{r}
+ggplot(type, aes(x= reserved_room_type , y = Number,fill= assigned_room_type)) +
+  geom_bar(stat = "identity", alpha = 0.7)+
+  coord_polar()
+```
+
+```{r}
+mod = lm(lead_time ~ adr, data = booking)
+summary(mod)
+```
+
+```{r}
+resid_panel(mod, plots = "all")
+```
+
+```{r}
+day <- hotel %>% dplyr::select(lead_time,
+                                 adr,
+                                 is_canceled,
+                               Country) %>%
+                       filter(is_canceled == 0) %>%
+  group_by(Country) %>%
+  count()
+```
+
 
