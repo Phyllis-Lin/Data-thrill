@@ -101,3 +101,67 @@ final <- na.omit(tidy)  # Delete the missing country observations
   
 ```
 
+1.Which day of the month is most common and which season (or month) has more customers in the whole year?
+
+
+```{r}
+library(plotly)
+month_2016 <- tidy %>%
+  filter(arrival_date_year == 2016) %>%
+  group_by(arrival_date_day_of_month, arrival_date_month, hotel) %>%
+  count(Count=n())
+
+g1 <- ggplot(month_2016,
+       aes(x=arrival_date_day_of_month, y=Count, color=arrival_date_month)) +
+  xlab("Arrival day") +
+  geom_col() + 
+theme(axis.text.x = element_text()) 
+  
+ggplotly(g1)
+
+```
+
+
+```{r}
+month_2016$arrival_date_month <- factor (month_2016$arrival_date_month,
+                     levels = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"))
+ggplot(month_2016,
+       aes(x=arrival_date_month, y=Count, fill=hotel)) +
+  geom_bar(stat = "identity", 
+position = "stack") + 
+  xlab("Month") +
+theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+
+```
+
+2.Comparing the most reserved season by different hotel types with different countries.
+
+```{r}
+library(kableExtra)
+library(dplyr)
+Top10Country <- tidy %>%
+  count(Country, sort = T) %>%
+  head(10) %>%
+  kable(caption = "Top10 coutries reserved")
+Top10Country
+```
+
+
+```{r}
+month_countries <- tidy %>%
+  filter(arrival_date_year == 2016,
+         Country %in%c("Portugal", "United Kingdom", "Australia", "China")) %>%
+  group_by(arrival_date_month, hotel, Country) %>%
+  count(Count=n())
+month_countries$arrival_date_month <- factor (month_countries$arrival_date_month,
+                     levels = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"))
+ggplot(month_countries,
+       aes(x=arrival_date_month, y=Count, fill=hotel)) +
+  geom_bar(stat = "identity", 
+position = "stack") + 
+  xlab("Month") +
+  facet_wrap(~Country, scales = "free_y") +
+theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+
