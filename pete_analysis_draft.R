@@ -1,12 +1,31 @@
-require(magick)
-require(ggplot2)
-require(ggimage)
-library(ggtext)
-library(png)
-library(ggpubr)
+library(calendR)
+library(ECharts2Shiny)
+library(echarts4r)
+library(ggalluvial)
+library(gganimate)
 library(ggflags)
-library(rworldmap)
+library(ggpol)
+library(ggpubr)
+library(ggrepel)
+library(ggtext)
 library(ggthemes)
+library(ggTimeSeries)
+library(hrbrthemes)
+library(leaflet)
+library(magrittr)
+library(patchwork)
+library(png)
+library(RColorBrewer)
+library(rworldmap)
+library(transformr)
+library(tvthemes)
+library(waffle)
+library(zoo)
+require(ggimage)
+require(magick)
+
+
+
 
 
 
@@ -118,7 +137,7 @@ hotel_new <- hotel_new %>%
 
 
 
-library(rayshader)
+
 
 
 
@@ -143,7 +162,7 @@ hotel %>%
 
 
 
-library(patchwork)
+
 
 # Shows how many bookings each country has made for either resort or hotel
 # and how many of those were canceled or proceeded normally
@@ -289,7 +308,7 @@ bookings_by_month <- bookings_table_per_month %>%
 bookings_by_month %>%
   head(10)
 
-
+# Bussiest month as a table
 
 bookings_by_month %>%
   mutate(month_booking_prop = total_bookings/sum(total_bookings, na.rm = TRUE) * 100)
@@ -341,8 +360,8 @@ month_hotel_book_prop <- bookings_table_per_month %>%
 ## PLan animation of bookings
 
 
-library(ggflags)
-library(ggrepel)
+
+
 
 #fig 4
 
@@ -367,9 +386,9 @@ set.seed(1010)
 
 
 
-library(zoo)
-library(gganimate)
-library(transformr)
+
+
+
 
 # Question: Which Countries Book trips to  Portugal more often and how the number of bookings
 # changes over time
@@ -405,8 +424,8 @@ hotel <- hotel_new %>%
 
 
 tbl <- hotel %>%
-  filter(country %in% c(sample_countries)) %>%
-  mutate(year_month = tsibble::yearmonth(Date),
+  dplyr::filter(country %in% c(sample_countries)) %>%
+  dplyr::mutate(year_month = tsibble::yearmonth(Date),
          country = tolower(countrycode::countrycode(sourcevar = country,
                                                     origin =  "country.name",
                                                     destination = "iso2c"))) %>%
@@ -419,8 +438,8 @@ tbl <- hotel %>%
 text_to_fig <- tbl %>%
   dplyr::filter(year_month == min(year_month) | year_month == max(year_month))
 
-anim <-   ggplot(tbl, aes(year_month, n, group = country, country = country, color = country )) +
-  geom_line() +
+anim <-   ggplot(tbl, aes(year_month, n, country = country, )) +
+  geom_point()+
   geom_text(text_to_fig, mapping = aes(label = country), show.legend = FALSE) +
   theme_bw() +
   scale_y_log10() +
@@ -431,26 +450,8 @@ anim <-   ggplot(tbl, aes(year_month, n, group = country, country = country, col
 
 #devtools::install_github("thomasp85/transformr")
 
-anim
-
-
-
-
-library(ggpol)
-
-
-perc <- hotel %>%
-  filter(country == "TJK") %>%
-  count(country, is_canceled) %>%
-  group_by(country) %>%
-  mutate(prop = round(n/sum(n) * 100,0))
-
-
-ggplot(perc) +
-  geom_parliament(aes(seats = prop, fill = is_canceled), color = "black") +
-  scale_fill_tableau(labels = perc$n) +
-  coord_fixed() +
-  theme_void()
+animate(anim, duration = 5, fps = 20, width = 200, height = 200, renderer = gifski_renderer())
+anim_save("output.gif")
 
 
 
@@ -458,42 +459,20 @@ ggplot(perc) +
 
 
 
-perc <- hotels %>%
-  filter(arrival_date_year == 2017, arrival_date_month == "January") %>%
-  count(country) %>%
-  arrange(desc(n)) %>%
-  head(10) %>%
-  mutate(percernt = round(n/sum(n) * 100))
-
-  ggplot(perc) +
-  geom_parliament(aes(seats = percernt, fill = country), color = "black") +
-  scale_fill_tableau(labels = perc$country) +
-  coord_fixed() +
-  theme_void()
 
 
 
 
 
-  install.packages("ggalluvial")
-  library(ggalluvial)
 
-  hotels %>%
-    count(hotel, reserved_room_type, adults, meal, is_canceled, name = "Freq") %>%
-    ggplot(
-           aes(axis1 = hotel, axis2 = reserved_room_type, axis3 = meal,
-               y = Freq)) +
-    scale_x_discrete(limits = c("Hotel", "Room Type", "Meal Type"), expand = c(.2, .05)) +
-    xlab("Demographic") +
-    geom_alluvium(aes(fill = as.factor(is_canceled))) +
-    geom_stratum() +
-    geom_text(stat = "stratum", aes(label = after_stat(stratum)))
+
+
 
 
 ## When i should book to find cheap
 
 install.packages("calendR")
-  library(calendR)
+
 
 
 book_day <- hotels %>%
@@ -512,7 +491,7 @@ book_day <- hotels %>%
 
 
 
-calendR(year = 2017,
+calendar <- calendR(year = 2017,
         start = "M",
         special.days = book_day$day,
         special.col = "green",            # Color of the specified days
@@ -531,56 +510,6 @@ calendR(year = 2017,
   )
 
 
-install.packages("tvthemes")
-library(tvthemes)
-
-
-
-# remotes::install_github("tylermorganwall/rayshader")
-# library(rayshader)
-# library(ggplot2)
-# library(tidyverse)
-#
-# gg = ggplot(diamonds, aes(x, depth)) +
-#   stat_density_2d(aes(fill = stat(nlevel)),
-#                   geom = "polygon",
-#                   n = 100,bins = 10,contour = TRUE) +
-#   facet_wrap(clarity~.) +
-#   scale_fill_viridis_c(option = "A")
-# plot_gg(gg,multicore=TRUE,width=5,height=5,scale=250)
-#
-#
-#
-
-
-
-
-
-
-#install.packages("ggalluvial")
-library(ggalluvial)
-
-most_visits <- hotels %>%
-  count(country, name = "bookings", sort = TRUE)  %>%
-  as_tibble() %>%
-  head(10) %>%
-  pull(country)
-
-
-
-hotels %>%
-  filter(country %in% most_visits) %>%
-  mutate(total_youth = children + babies,
-         stay_length = stays_in_week_nights + stays_in_weekend_nights ) %>%
-  count(country, hotel, stay_length, total_youth, meal, is_canceled, name = "Freq") %>%
-  ggplot(
-    aes(axis1 = country, axis2 = hotel, axis3 = stay_length, axis4 = total_youth,
-        axis5 = meal, y = Freq)) +
-  #scale_x_discrete(limits = c("Hotel", "Hotel", "Meal Type"), expand = c(.2, .05)) +
-  xlab("Demographic") +
-  geom_alluvium(aes(fill = as.factor(is_canceled))) +
-  geom_stratum() +
-  geom_text(stat = "stratum", aes(label = after_stat(stratum)))
 
 
 
@@ -588,23 +517,16 @@ hotels %>%
 
 
 
-devtools::install_github('Ather-Energy/ggTimeSeries')
-library(ggTimeSeries)
 
-set.seed(1)
-dfData = data.frame(x = 1:100, y = cumsum(rnorm(100)))
 
-# base plot
-p1 = ggplot_waterfall(
-  dtData = dfData,
-  'x',
-  'y'
-)
 
-# adding some formatting
-p1 +
-  xlab(NULL) +
-  ylab(NULL)
+
+
+
+
+
+
+#devtools::install_github('Ather-Energy/ggTimeSeries')
 
 
 
@@ -615,10 +537,9 @@ hotel_new %>%
           arrival_date_day_of_month,
           sep = "/")),
     year_month = as.Date(tsibble::yearmonth(Date))) %>%
-  count(hotel, year_month) %>%
-  ggplot_waterfall(
-    'year_month',
-    'n'
+  count(hotel, country, year_month) %>%
+  ggplot_waterfall(cXColumnName = 'year_month',
+                   cYColumnName = 'n'
   ) +
   facet_wrap(~hotel) +
   ggthemes::theme_solarized_2(light = FALSE) +
@@ -642,7 +563,7 @@ visitors <- hotel_new %>%
     n <= mean(n) ~ 0
   ))
 
-library(patchwork)
+
 
 visitors %>%
   filter(hotel == "Resort Hotel") %>%
@@ -669,27 +590,6 @@ ggplot_calendar_heatmap(
 
 
 
-hotel_new %>%
-  mutate(total_youth = children + babies,
-         stay_length = stays_in_week_nights + stays_in_weekend_nights ) %>%
-  mutate(family_children = case_when(
-    total_youth == 0 ~ "None",
-    total_youth == 1 ~ "One",
-    total_youth == 2 ~ "Two",
-    total_youth == 3 ~ "Three",
-    total_youth > 3 ~ "More than three",
-  )) %>%
-  ggplot(aes(stay_length, color = family_children)) +
-  geom_density()
-
-
-hotel_new %>%
-  mutate(total_youth = children + babies,
-         stay_length = stays_in_week_nights + stays_in_weekend_nights ) %>%
-  filter(country %in% c("Portugal", "France", "Spain", "United Kingdom", "Brazil")) %>%
-  ggplot(aes(x = stay_length, y = country,  fill = country)) +
-  geom_density_ridges_gradient() +
-  xlim(0, 15)
 
 
 
@@ -723,8 +623,8 @@ mutate(country = as.factor(country)) %>%
 
 
 
-library(leaflet)
-library(RColorBrewer)
+
+
 
 mapCountry<- maps::map("world", fill = TRUE, plot = FALSE)
 
@@ -749,60 +649,32 @@ map <- leaflet(mapCountry) %>% # create a blank canvas
 map
 
 
-library(waffle)
-library(magrittr)
-library(hrbrthemes)
-library(ggplot2)
-library(dplyr)
-library(waffle)
-
-
-hotel %>%
-  count(country, is_canceled)
-
-hotel %>%
-  filter(country == "TJK") %>%
-  count(country, is_canceled) %>%
-  group_by(country) %>%
-  mutate(prop = round(n/sum(n) * 100,0)) %>%
-  ggplot(aes(values = prop, fill = as.factor(is_canceled))) +
-  geom_waffle(n_rows = 20, size = 0.33, colour = "white", flip = TRUE) +
-  scale_fill_manual(
-    name = NULL,
-    values = c("green", "red"),
-    labels = c("Arrived", "Canceled")
-  ) +
-  coord_equal() +
-  theme_enhance_waffle()
 
 
 
 
 
-
-data.frame(
-  parts = factor(rep(month.abb[1:3], 3), levels=month.abb[1:3]),
-  vals = c(10, 20, 30, 6, 14, 40, 30, 20, 10),
-  col = rep(c("blue", "black", "red"), 3),
-  fct = c(rep("Thing 1", 3),
-          rep("Thing 2", 3),
-          rep("Thing 3", 3))
-) -> xdf
-
-
-xdf %>%
-  count(parts, wt = vals) %>%
-  ggplot(aes(label = parts, values = n)) +
-  geom_pictogram(n_rows = 10, aes(colour = parts), flip = TRUE, make_proportional = TRUE) +
+pictogram <- hotel %>%
+  count(hotel, arrival_date_month, adults, children, babies) %>%
+  pivot_longer(cols = c("adults", "children", "babies"),
+               names_to = "group",
+               values_to = "number") %>%
+  group_by(hotel, arrival_date_month, group) %>%
+  summarise(total  = sum(number)) %>%
+  filter(arrival_date_month == "October",
+         hotel == "Resort Hotel") %>%
+  arrange(group) %>%
+  ggplot(aes(label = group, values = total)) +
+  geom_pictogram(n_rows = 10, aes(colour = group), flip = TRUE, make_proportional = TRUE) +
   scale_color_manual(
     name = NULL,
     values = c("#a40000", "#c68958", "#ae6056"),
-    labels = c("Baby", "Child", "Adult")
+    labels = c("Adult", "Baby", "Child")
   ) +
   scale_label_pictogram(
     name = NULL,
-    values = c("baby-carriage", "child", "female"),
-    labels = c("Baby", "Child", "Adult")
+    values = c( "female", "baby-carriage", "child"),
+    labels = c("Adult", "Baby", "Child")
   ) +
   coord_equal() +
   theme_enhance_waffle() +
@@ -814,129 +686,8 @@ xdf %>%
 
 
 
-hotel_info = data.frame(hotel_info=c("City Hotel", "Resort Hotel"), value=c(30, 15),
-                    path = c('path://M20 6.093l-3-3v-2.093h3v5.093zm1 11.349c.813.315 1.732.558 3 .558v2c-3.896 0-5.083-2-8.002-2-3.04 0-4.436 2-8.002 2-3.684 0-4.376-2-7.996-2v-2c1.275 0 2.217.184 3 .438v-4.438h-3l12-12 12 12h-3v5.442zm-11-3.442v3.692c1.327-.403 2.469-1.089 4-1.45v-2.242h-4zm-2.004 8c-3.184 0-3.767-2-7.996-2v2c3.62 0 4.312 2 7.996 2 3.566 0 4.962-2 8.002-2 2.919 0 4.106 2 8.002 2v-2c-3.649 0-4.438-2-8.002-2-3.581 0-4.977 2-8.002 2z',
-                             'path://M24 24h-23v-15h4v-3h3v-6h9v6h3v3h4v15zm-15-5v4h3v-4h-3zm4 0v4h3.012v-4h-3.012zm-8 0h-2v2h2v-2zm17 0h-2v2h2v-2zm-11-4h-2v2h2v-2zm5.012 0h-2v2h2v-2zm-11.012 0h-2v2h2v-2zm17 0h-2v2h2v-2zm-11-4h-2v2h2v-2zm5.012 0h-2v2h2v-2zm-11.012 0h-2v2h2v-2zm17 0h-2v2h2v-2zm-11-4h-2v2h2v-2zm5.012 0h-2v2h2v-2zm-3.012-4h-1v-1h-1v3h1v-1h1v1h1v-3h-1v1z'))
 
-hotel_info %>%
-  e_charts(hotel_info) %>%
-  e_x_axis(splitLine=list(show = FALSE),
-           axisTick=list(show=FALSE),
-           axisLine=list(show=FALSE),
-           axisLabel= list(show=FALSE)) %>%
-  e_y_axis(max=100,
-           splitLine=list(show = FALSE),
-           axisTick=list(show=FALSE),
-           axisLine=list(show=FALSE),
-           axisLabel=list(show=FALSE)) %>%
-  e_color(color = c('red','blue')) %>%
-  e_pictorial(value, symbol = path, z=10, name= 'realValue',
-              symbolBoundingData= 100, symbolClip= TRUE) %>%
-  e_pictorial(value, symbol = path, name= 'background',
-              symbolBoundingData= 100) %>%
-  e_labels(position = "bottom", offset= c(0, 10),
-           textStyle =list(fontSize= 20, fontFamily= 'Arial',
-                           fontWeight ='bold',
-                           color= '#69cce6'),
-           formatter="{@[1]}% {@[0]}") %>%
-  e_legend(show = FALSE) %>%
-  e_theme("westeros")
-
-
-
-## How full is the hotel ?
-
-
-# The user will provide a month and I will show an infographic of
-#  the two hotels side-by-side filled by how booked they are
-
-# To define the "fullnes" I will use as a base the max number
-# of people that were at the hotel the same day
-
-library(echarts4r)
-
-
-
-prop_info <- hotel %>%
-  group_by(hotel, arrival_date_month) %>%
-  count(is_canceled) %>%
-  mutate(total_bookings = sum(n),
-         value = n/total_bookings * 100) %>%
-  filter(is_canceled == 1,
-         arrival_date_month == "July")
-
-hotel_info = data.frame(hotel_info=c("Resort Hotel", "City Hotel"), value=c(prop_info$value[1], prop_info$value[2]),
-                        path = c('path://M20 6.093l-3-3v-2.093h3v5.093zm1 11.349c.813.315 1.732.558 3 .558v2c-3.896 0-5.083-2-8.002-2-3.04 0-4.436 2-8.002 2-3.684 0-4.376-2-7.996-2v-2c1.275 0 2.217.184 3 .438v-4.438h-3l12-12 12 12h-3v5.442zm-11-3.442v3.692c1.327-.403 2.469-1.089 4-1.45v-2.242h-4zm-2.004 8c-3.184 0-3.767-2-7.996-2v2c3.62 0 4.312 2 7.996 2 3.566 0 4.962-2 8.002-2 2.919 0 4.106 2 8.002 2v-2c-3.649 0-4.438-2-8.002-2-3.581 0-4.977 2-8.002 2z',
-                                 'path://M24 24h-23v-15h4v-3h3v-6h9v6h3v3h4v15zm-15-5v4h3v-4h-3zm4 0v4h3.012v-4h-3.012zm-8 0h-2v2h2v-2zm17 0h-2v2h2v-2zm-11-4h-2v2h2v-2zm5.012 0h-2v2h2v-2zm-11.012 0h-2v2h2v-2zm17 0h-2v2h2v-2zm-11-4h-2v2h2v-2zm5.012 0h-2v2h2v-2zm-11.012 0h-2v2h2v-2zm17 0h-2v2h2v-2zm-11-4h-2v2h2v-2zm5.012 0h-2v2h2v-2zm-3.012-4h-1v-1h-1v3h1v-1h1v1h1v-3h-1v1z'))
-
-
-hotel_info %>%
-  e_charts(hotel_info) %>%
-  e_x_axis(splitLine=list(show = TRUE),
-           axisTick=list(show=TRUE),
-           axisLine=list(show=TRUE),
-           axisLabel= list(show=TRUE)) %>%
-  e_y_axis(max=100,
-           splitLine=list(show = TRUE),
-           axisTick=list(show=TRUE),
-           axisLine=list(show=TRUE),
-           axisLabel=list(show=TRUE)) %>%
-  #e_color(color = c('purple','gold')) %>%
-  e_pictorial(value, symbol = path, z=10, name= 'Cancellations',
-              symbolBoundingData= 100, symbolClip= TRUE) %>%
-  e_pictorial(value, symbol = path, name= 'Arrivals',
-              symbolBoundingData= 100) %>%
-  e_labels(position = "top", offset= c(10, 0),
-           textStyle =list(fontSize= 15, fontFamily= 'Serif',
-                           fontWeight ='italic',
-                           color= 'red'),
-           formatter="Cancellations:\n {@[1]}% {@[0]}" ) %>%
-  e_legend(show = TRUE ) %>%
-  e_theme("chalk")
-
-
-
-
-
-
-
-library(ECharts2Shiny)
-
-library(echarts4r)
-
-
-
-library(ggalluvial)
-
-hotel_new %>%
-  mutate(total_youth = children + babies,
-         stay_length = stays_in_week_nights + stays_in_weekend_nights,
-         family = case_when(
-           total_youth == 0 ~ "Without children",
-           total_youth > 0 ~ "With children"),
-         visitor_type = case_when(
-           stay_length <= 2 ~ "max 2 days",
-           stay_length > 2 & stay_length <= 5  ~ "max 5 days",
-           stay_length > 5 & stay_length <= 7  ~ "max 7 days",
-           stay_length > 7 ~ "more than 7 days")
-  ) %>%
-  group_by(is_canceled) %>%
-  count(hotel, visitor_type, family, name = "Freq") %>%
-  ggplot(aes(axis1 = hotel, axis2 = family, axis3 = visitor_type,  y = Freq)) +
-  scale_x_discrete(limits = c("Hotel", "Family type", "Stay Length"), expand = c(.2, .05)) +
-  xlab("Demographic") +
-  geom_flow(aes(fill = as.factor(is_canceled))) +
-  geom_stratum() +
-  geom_text(stat = "stratum", aes(label = after_stat(stratum))) +
-  ggthemes::scale_fill_fivethirtyeight("Booking Outcome",
-                                       labels = "Arrived", "Canceled")
-
-
-
-
-
-
-
+## Logistic regression
 
 
 
@@ -962,11 +713,14 @@ mod_aug <-mod %>%
   mutate(y_hat = .fitted)
 
 
-ggplot(mod_aug, aes(x = stay_length, y = y_hat)) +
+log <- ggplot(mod_aug, aes(x = stay_length, y = y_hat)) +
   geom_point() +
   geom_line() +
   scale_y_continuous("Probability of cancelling booking", limits = c(0, 1))
 
 
 
-
+hotel_new %>%
+  count(hotel, arrival_date_month, is_canceled) %>%
+  group_by(hotel, arrival_date_month ) %>%
+  mutate(prop = n/sum(n) * 100)
