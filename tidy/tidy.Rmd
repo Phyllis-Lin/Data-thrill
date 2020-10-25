@@ -96,17 +96,3 @@ vis_tidy
 ```
 
 
-
-```{r tidy}
-sec_mute <- sec_mute  %>% dplyr::select(-market_segment,
-                               -distribution_channel,
-                               -deposit_type,
-                               -agent,
-                               -company) 
-```
-
-
-```{r}
-final <- na.omit(sec_mute)  # Delete the missing country observations
-```
-
