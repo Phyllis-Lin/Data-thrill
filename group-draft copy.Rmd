@@ -1,0 +1,156 @@
+---
+title: "5510-group"
+author: "chenjie Gong"
+date: "14/10/2020"
+output: html_document
+---
+
+
+
+
+
+
+
+
+
+1.What is the percentage of customer's type who book a hotel?
+the transient customer is 89613, which is 74.682%
+the transient-party customer is 25120, which is 21.04%
+the contract customer is 4079,which is 3.416%
+the group customer is 577, which is 0.48%.
+```{r}
+dt1 <-tidy %>%
+  select(hotel,customer_type) %>%
+  count(customer_type)
+
+dt1 = dt1[order(dt1$n, decreasing = TRUE),]   
+myLabel = as.vector(dt1$customer_type)   
+#myLabel = paste(myLabel, "(", round(dt$n / sum(dt$n) * 100, 2), "%)", sep = "")   
+
+
+pp = ggplot(dt, aes(x = "", y = n, fill = customer_type)) +
+  geom_bar(stat = "identity", width = 0.5) +  
+  coord_polar(theta = "y") + 
+  theme_bw() + 
+  labs(x = "", y = "", title = "") + 
+  theme(axis.ticks = element_blank()) + 
+  #theme(legend.position = "none") + 
+  theme(legend.title = element_blank(), legend.position = "left")+
+  #geom_text(aes(y = n/20 + c(0, cumsum(n)[-length(n)]), x = sum(n)/20, label = myLabel), size = 2)+
+  #geom_text(vjust=0.3,hjust=0.4)+
+  theme(axis.text.x = element_blank()) + 
+  theme(panel.grid=element_blank()) +   
+  theme(panel.border=element_blank())+
+  labs(title = "the presentage of customer type")
+pp
+
+ 
+ 
+```
+
+
+2.People staying in hotels tend to be one person, couples, or multiple people？
+It can be seen from this figture that no matter what kind of hotel, the number of people staying in two is the most, followed by the hotel where one person stays, and the number of people staying in a family is the least.
+Therefore, it is recommended that the hotel, in terms of room type arrangements, should be mainly double rooms or couple rooms. Secondly, arrange single suites. This can maximize the hotel's space utilization and maximize revenue.
+
+```{r  the density plot by number of customers}
+age1<- tidy%>%
+  select(hotel,adults,children,babies) %>%
+  filter(hotel=="Resort Hotel") %>%
+  mutate(all=adults+children+babies)
+
+q1<-ggplot(age1, aes(x = all))+
+  geom_density(fill="green")+
+  xlim(0,5)+
+  xlab("the number of customers in resort-hotel") +
+  labs(title = "the density plot in resort-hotel")
+
+age2<- tidy%>%
+  select(hotel,adults,children,babies) %>%
+  filter(hotel=="City Hotel") %>%
+  mutate(all=adults+children+babies)
+
+q2<-ggplot(age2, aes(x = all))+
+  geom_density(fill="red")+
+  xlim(0,5)+
+  xlab("the number of customers in city-hotel") +
+  labs(title = "the density plot in city-hotel")
+
+grid.arrange(q2, q1, ncol = 2)
+```
+
+3.How long do people book hotels in advance？
+The picture describes how long people tend to book a hotel in advance. The blue line is his average value (one hundred days in advance). The picture shows that hotel guests are mostly temporary hotels, while customers in city hotels Book more in advance.
+Therefore, our suggestion is that for resort hotels, they should be more inclined to offline promotion, such as large physical billboards, luxurious exterior decorations, and shiny lights.
+For city hotels, online advertising should be promoted, because people book more in advance, so online advertising and some coupons can attract customers more accurately.
+```{r  leadtime}
+ltime <- tidy %>%
+  select(hotel,lead_time) 
+  
+q3<-ggplot(ltime, aes(x =lead_time))+
+  geom_density(aes(color=hotel),alpha=0.4)+
+  geom_vline(xintercept = mean(ltime$lead_time),color="blue", linetype="dashed")+
+  labs(title = "the density of booking hotel days in advance")+
+  xlab("the number of day booking hotel in advance")
+q3
+```
+
+This graph shows the frequency of people staying in hotels on weekends and weekdays. On weekdays, more people choose to stay for 1 to 3 nights. The average number is 2 nights. On weekends, people also choose to stay for 1 night. The number of people is more, followed by 2 nights. All in all, the proportion of customers renewing on Sunday is 2/1, while the proportion of customers renewing on weekdays is 2/5.
+Therefore, we recommend that hotels do more promotional activities during workdays to increase hotel occupancy rates and renewal rates during workdays.
+```{r}
+night <- tidy  %>%
+  select(hotel,stays_in_week_nights) 
+  
+n<-ggplot(night, aes(x =stays_in_week_nights))+
+  geom_density(aes(color=stays_in_week_nights),fill="red3",alpha=0.4)+
+  geom_vline(xintercept = mean(night$stays_in_week_nights),color="blue", linetype="dashed")+
+  xlim(0,20)+
+  labs(title = "Number of days to stay in the hotel on weekdays")
+
+night1 <- tidy %>%
+  select(hotel,stays_in_weekend_nights) 
+  
+n1<-ggplot(night1, aes(x =stays_in_weekend_nights))+
+  geom_density(aes(color=stays_in_weekend_nights),fill="green3",alpha=0.4)+
+  geom_vline(xintercept = mean(night1$stays_in_weekend_nights),color="blue", linetype="dashed")+
+  xlim(0,10)+
+  labs(title = "Number of days to stay in the hotel on weekdays")
+
+grid.arrange(n, n1, ncol = 1)
+```
+
+What month is the peak of the hotel?
+It can be seen from this chart that no matter what kind of hotel it is, April, August, and December are the peak periods for hotels.
+For hotels, we recommend that more people be hired during this period to cope with the peak of passenger flow, so as not to reduce service quality, so as to bring a good experience to customers and increase the image of the hotel.
+For customers, we recommend avoiding travel during these three months, and being able to travel off peaks and enjoy better hotel services.
+```{r}
+month <- tidy %>%
+  select(hotel,arrival_date_month,arrival_date_year) %>%
+  filter(hotel=="Resort Hotel")
+  
+mr<-ggplot(month, aes(x =arrival_date_month))+
+  geom_density(aes(color=arrival_date_year),fill="greenyellow",alpha=0.4)+
+  theme(axis.text.x = element_text(angle = 90))+
+  labs(title = "the customer density plot by month in resort-hotel")+
+  geom_vline(xintercept = mean(month$arrival_date_month),color="blue", linetype="dashed")+
+  facet_wrap(~arrival_date_year)
+
+
+
+month2 <- tidy %>%
+  select(hotel,arrival_date_month,arrival_date_year) %>%
+  filter(hotel=="City Hotel")
+  
+mc<-ggplot(month2, aes(x =arrival_date_month))+
+  geom_density(aes(color=arrival_date_year),fill="red3",alpha=0.3)+
+  theme(axis.text.x = element_text(angle = 90))+
+  labs(title = "the customer density plot by month in city-hotel")+
+  geom_vline(xintercept = mean(month$arrival_date_month),color="blue", linetype="dashed")+
+  facet_wrap(~arrival_date_year)
+
+grid.arrange(mr, mc, ncol = 1)
+```
+
+
+
+
