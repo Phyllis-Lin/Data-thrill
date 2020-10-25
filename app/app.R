@@ -13,7 +13,6 @@ header <- dashboardHeader(title = "Hotel Bookings",
       icon =  icon(name = "github",
                    class = "fa-3x fa-pull-left")
     )
-
   )
 )
 
@@ -87,7 +86,6 @@ rooms and in which months?</li>
 regular customer rate.</li>
 </ul>')
 
-
                         )
                       )
 
@@ -133,22 +131,23 @@ regular customer rate.</li>
         tabPanel("Hotel Analysis", icon = icon("hotel"),
                  tags$div("In this segment of our analysis we explore the datset to answer
                           questions that provide valuable insight to hotel owners. Emphasis is
-                          given to identify the clinet's profile that choose as a preference one
-                          of the two types of hotels. Moreover, we explore the country of origin of
+                          given to identify the clinet's profile that choose between the City and
+                          the Resort Hotel. Moreover, we explore the country of origin of
                           these guests so that hotel owners can identify where they should target thir
                           marketing campaigns. Finally, a valuable piece of information for hotel owners
                           would be to know the probability of a guest to cancel its booking.
-                          We will attempt to answer this on the final section of this
+                          We will attempt to answer this on the following sections of this
                           analysis.",
                           style = "color:black;font-size: 20px;font-weight:normal;"
                  ),
                  br(),
                  fluidRow(
                    column(width = 12,
-                          tags$div("At first we provide relative information about from
-                                   which countries the majority of the customers comes from.",
+                          tags$div("At first we provide relative information about which
+                                   countries the majority of the customers comes from.",
                                    style = "color:black;font-size: 20px;font-weight:normal;")
                           ),
+                   br(),
                    fluidRow(
                    column(width = 6,
                           plotOutput("resort", width = "700px", height = "600px")
@@ -185,7 +184,6 @@ regular customer rate.</li>
                         )
                  ),
                  fluidRow(width = 12,
-                          plotOutput("flow", height = "600px"),
                           plotOutput("log", height = "600px")
 
                  )
@@ -247,7 +245,38 @@ regular customer rate.</li>
                  column(width = 6,
                  plotOutput("picto", width = "800px", height = "700px")
                  )
-        ), inverse = TRUE)),
+
+        ),
+        tabPanel("yugi",
+                 fluidRow(
+                   plotlyOutput("day"),
+                   plotOutput("month_book"),
+                   plotOutput("month_country")
+                 )
+
+                 ),
+        tabPanel("yiwen",
+                 fluidRow(
+                   plotOutput("grid"),
+                   plotOutput("int"),
+                   plotOutput("int2")
+
+                   )
+
+                 ),
+
+        tabPanel("chenjie",
+                 fluidRow(
+                   plotOutput("density"),
+                   plotOutput("density2"),
+                   plotOutput("density3"),
+                   plotOutput("density4")
+                 )),
+
+
+
+
+        inverse = TRUE)),
     tabItem(tabName = "repro",
             fluidPage(
               tags$iframe(
@@ -293,13 +322,16 @@ server <- function(input, output) {
           face = "italic",
           colour = "black",
           size = 16
-        )
+        ),
+        title = element_text(colour = "black",
+                             size = 18),
+        axis.title.x.bottom = element_text(colour = "black",
+                                           size = 18)
       ) +
       labs(
         title = "Proportion of Bookings by Country fot the Resort Hotel",
         y = "Proportion"
       )
-
 
   )
 
@@ -310,25 +342,40 @@ server <- function(input, output) {
     geom_segment( aes(xend=country, yend=0), color="#5D7783", lwd = 1.6) +
     geom_point( size=5, color="#DC493D", shape =19, ) +
     coord_flip() +
-    theme(
-      axis.title.y = element_blank(),
-      axis.title.x = element_text(size = 7.5),
-      axis.text = element_text(size = 10)
-    ) +
+      ggthemes::theme_solarized() +
+      theme(
+        axis.title.y = element_blank(),
+        axis.title.x = element_text(size = 15),
+        plot.title.position = "plot",
+        axis.text.y = element_text(
+          face = "italic",
+          colour = "black",
+          size = 16
+        ),
+        axis.text.x = element_text(
+          face = "italic",
+          colour = "black",
+          size = 16
+        ),
+        title = element_text(colour = "black",
+                              size = 18),
+        axis.title.x.bottom = element_text(colour = "black",
+                                           size = 18)
+      ) +
     labs(
-      y = "Proportion of City Hotel Bookings"
-    ) +
-    ggthemes::theme_solarized()
+      y = "Proportion of City Hotel Bookings",
+      title = "Proportion of Bookings by Country fot the City Hotel"
+      )
   )
 
 
   output$visitors <- renderPlot(
 
-    hotel_new %>%
-      filter(country != "Portugal") %>%
-      mutate(country = as.factor(country)) %>%
-      count(country, is_canceled) %>%
-      group_by(country) %>%
+    final %>%
+      mutate(Country = as.factor(Country)) %>%
+      filter(Country != "Portugal") %>%
+      count(Country, is_canceled) %>%
+      group_by(Country) %>%
       mutate(total_bookings = sum(n),
              perc_cancel = case_when(
                is_canceled == 1 ~ n/total_bookings
@@ -337,7 +384,7 @@ server <- function(input, output) {
                is_canceled == 0 ~ n/total_bookings
              )
       ) %>%
-      select(country, total_bookings, contains("perc")) %>%
+      select(Country, total_bookings, contains("perc")) %>%
       pivot_longer(
         cols = contains("perc"),
         names_to = "outcome",
@@ -346,13 +393,13 @@ server <- function(input, output) {
       arrange(desc(total_bookings)) %>%
       na.omit() %>%
       ungroup() %>%
-      filter(country != "PRT" & country!= "NULL") %>%
+      #filter(country != "PRT" & country!= "NULL") %>%
       slice_head(n = 20) %>%
-      mutate(code = tolower(countrycode::countrycode(sourcevar = country,
+      mutate(code = tolower(countrycode::countrycode(sourcevar = Country,
                                                      origin =  "country.name",
                                                      destination = "iso2c"))) %>%
       filter(outcome == "perc_arrived") %>%
-      ggplot(aes(fct_reorder(country, -total_bookings), total_bookings, fill = percentage)) +
+      ggplot(aes(fct_reorder(Country, -total_bookings), total_bookings, fill = percentage)) +
       geom_col() +
       ggflags::geom_flag(y = -1 ,aes(country = code), size = 6, show.legend = FALSE) +
       scale_country() +
@@ -389,6 +436,11 @@ server <- function(input, output) {
         title = "Top - 10 Countries by number of bookings",
         subtitle = "The fill of the columns indicates the proportion<br> of bookings
     that was **not** canceled")
+
+
+
+
+
   )
 
 
@@ -445,20 +497,72 @@ output$picto <- renderPlot({
 })
 
 
-output$flow <- renderPlot(
-
-  flow_chart
-)
-
 
 output$log <- renderPlot(
 
   log
 )
 
+output$day <- renderPlotly(
+
+
+  ggplotly(g1)
+)
+
+
+output$month_book <- renderPlot(
+
+  month_book
+)
+
+
+output$month_country <- renderPlot(
+
+  month_country
+)
+
+
+output$grid <- renderPlot(
+
+  grid.arrange(prop_c,prop_r,ncol=2)
+)
+
+
+output$int <- renderPlot(
+
+ interval
+)
+
+
+output$int2 <- renderPlot(
+
+  grid.arrange(interval_c,interval_r,ncol=2)
+)
 
 
 
+
+output$density <- renderPlot(
+  grid.arrange(q2, q1, ncol = 2)
+)
+
+output$density2 <-  renderPlot(
+
+  q3
+)
+
+
+output$density3 <-  renderPlot(
+
+  grid.arrange(n, n1, ncol = 1)
+
+)
+
+output$density4 <-  renderPlot(
+
+  grid.arrange(mr, mc, ncol = 1)
+
+)
 
 }
 
