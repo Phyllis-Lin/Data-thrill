@@ -131,8 +131,6 @@ prop_c <- a%>%
   geom_text(aes(label=prop),hjust = -0.008, size = 2)+
   scale_y_continuous(breaks=seq(0,1,0.02))
 
-
-
 prop_r <- a%>%
   filter(hotel=="Resort Hotel")%>%
   ggplot(aes(x=reorder(Country,prop),y=prop))+

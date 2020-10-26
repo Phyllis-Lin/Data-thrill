@@ -670,7 +670,7 @@ grid.arrange(prop_c,prop_r,ncol=2)
 
 From the bar plots and density plots, people would clearly know that how close to the arrival data that customers have the most probability to cancel current booking.
 
-It clearly shows that both of the two hotels have the similar distribution about the interval which represents the day between the original arrival day and the reservation cancelling day. 
+It clearly shows that both of the two hotels have the similar distribution about the interval which represents the day between the original arrival day and the reservation cancelled day. 
 
 From the bar plots, people could find that to City Hotel, most of the interval is between 0 to 270 days while to Resort Hotel, that is between 0 to 150 days.
 
