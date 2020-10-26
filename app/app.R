@@ -1,19 +1,20 @@
 library(shinydashboard)
 library(shiny)
+library(leaflet)
 
 
 
 header <- dashboardHeader(title = "Hotel Bookings",
-  dropdownMenu(
-    type = "messages",
-    messageItem(
-      from = HTML('<span style="color:maroon;font-size:17px;">Data Thrills</span>'),
-      message =  HTML('<span style="color:green;font-size:14px;">Code available on this GitHub repo:</span>'),
-      href = "https://github.com/Phyllis-Lin/Data-thrill",
-      icon =  icon(name = "github",
-                   class = "fa-3x fa-pull-left")
-    )
-  )
+                          dropdownMenu(
+                            type = "messages",
+                            messageItem(
+                              from = HTML('<span style="color:maroon;font-size:17px;">Data Thrills</span>'),
+                              message =  HTML('<span style="color:green;font-size:14px;">Code available on this GitHub repo:</span>'),
+                              href = "https://github.com/Phyllis-Lin/Data-thrill",
+                              icon =  icon(name = "github",
+                                           class = "fa-3x fa-pull-left")
+                            )
+                          )
 )
 
 sidebar <- dashboardSidebar(
@@ -89,18 +90,18 @@ regular customer rate.</li>
                         )
                       )
 
-                      ),
+             ),
              tabPanel("Dataset", ""),
-        tabPanel("Source", "",
-                 fluidPage(
-                   fluidRow(
-                     tags$iframe(
-                       src = 'https://www.sciencedirect.com/science/article/pii/S2352340918315191#f0010',
-                       width = '150%', height = '800px',
-                       frameborder = 0, scrolling = 'auto'
-                     )
-                   ),
-                 ))
+             tabPanel("Source", "",
+                      fluidPage(
+                        fluidRow(
+                          tags$iframe(
+                            src = 'https://www.sciencedirect.com/science/article/pii/S2352340918315191#f0010',
+                            width = '150%', height = '800px',
+                            frameborder = 0, scrolling = 'auto'
+                          )
+                        ),
+                      ))
 
 
 
@@ -112,12 +113,12 @@ regular customer rate.</li>
                 width = 10,
                 title = "Cleaning Process",
                 "Mpla mpal mpla "
-                )
               )
-            ),
+            )
+    ),
     tabItem(tabName = "wrangle"),
     tabItem(tabName = "analysis",
-    navbarPage(footer =  HTML('<span style="color:black;font-size: 20px;
+            navbarPage(footer =  HTML('<span style="color:black;font-size: 20px;
                             font-weight:bold;">
                             <a href="https://mida.numbat.space" target="_blank">
                             ETC5510: Introduction to Data Analysis</a><span>'),
@@ -128,8 +129,8 @@ regular customer rate.</li>
         table.dataTable  {color:black; font-size:18px; background-color:#ffecef}")
                        ),
 
-        tabPanel("Hotel Analysis", icon = icon("hotel"),
-                 tags$div("In this segment of our analysis we explore the datset to answer
+                       tabPanel("Hotel Analysis", icon = icon("hotel"),
+                                tags$div("In this segment of our analysis we explore the datset to answer
                           questions that provide valuable insight to hotel owners. Emphasis is
                           given to identify the clinet's profile that choose between the City and
                           the Resort Hotel. Moreover, we explore the country of origin of
@@ -138,151 +139,187 @@ regular customer rate.</li>
                           would be to know the probability of a guest to cancel its booking.
                           We will attempt to answer this on the following sections of this
                           analysis.",
-                          style = "color:black;font-size: 20px;font-weight:normal;"
-                 ),
-                 br(),
-                 fluidRow(
-                   column(width = 12,
-                          tags$div("At first we provide relative information about which
+                                         style = "color:black;font-size: 20px;font-weight:normal;"
+                                ),
+                                br(),
+                                fluidRow(
+                                  column(width = 12,
+                                         tags$div("At first we provide relative information about which
                                    countries the majority of the customers comes from.",
-                                   style = "color:black;font-size: 20px;font-weight:normal;")
-                          ),
-                   br(),
-                   fluidRow(
-                   column(width = 6,
-                          plotOutput("resort", width = "700px", height = "600px")
-                          ),
-                   column(width = 6,
-                          plotOutput("city", width = "700px", height = "600px")
-                   )
-                   ),
-                   br(),
-                   tags$div("As we can see in both types of hotels the majority of customers
+                                                  style = "color:black;font-size: 20px;font-weight:normal;")
+                                  ),
+                                  br(),
+                                  fluidRow(
+                                    column(width = 6,
+                                           plotOutput("resort", width = "700px", height = "600px")
+                                    ),
+                                    column(width = 6,
+                                           plotOutput("city", width = "700px", height = "600px")
+                                    )
+                                  ),
+                                  br(),
+                                  tags$div("As we can see in both types of hotels the majority of customers
                             comes from within Portugal.",
-                            style = "color:black;font-size: 20px;font-weight:normal;"),
-                   br(),
-                   tags$div("For both types of hotels bookings from within Portugal amount for
+                                           style = "color:black;font-size: 20px;font-weight:normal;"),
+                                  br(),
+                                  tags$div("For both types of hotels bookings from within Portugal amount for
                             more than 40% of their total business. The rest of the countries that
                             visit hotels in Portugal more frequently are the following:",
-                            style = "color:black;font-size: 20px;font-weight:normal;"),
-                   fluidPage(
-                     fluidRow(width = 12,
-                     plotOutput("visitors", width = "800px", height = "500px")
-                     )
-                   )
-                 ),
-                 br(),
-                 fluidRow(
-                   column(width = 6,
-                   tags$div("Finally, we shift our focus on from which countries customers are more prone to canceling their
+                                           style = "color:black;font-size: 20px;font-weight:normal;"),
+                                  fluidPage(
+                                    fluidRow(width = 12,
+                                             plotOutput("visitors", width = "800px", height = "500px")
+                                    )
+                                  )
+                                ),
+                                br(),
+                                fluidRow(
+                                  column(width = 6,
+                                         tags$div("Finally, we shift our focus on from which countries customers are more prone to canceling their
                             booking. The below choropleth map indicates countries with high number of
                             cancelations.",
-                            style = "color:black;font-size: 20px;font-weight:normal;"),
-                 ),
-                 fluidRow(width = 12,
-                        leafletOutput("map", height = "500px")
-                        )
-                 ),
-                 fluidRow(width = 12,
-                          plotOutput("log", height = "600px")
+                                                  style = "color:black;font-size: 20px;font-weight:normal;"),
+                                  ),
+                                  fluidRow(width = 12,
+                                           leafletOutput("map", height = "500px")
+                                  )
+                                ),
+                                fluidRow(width = 12,
+                                         plotOutput("log", height = "600px")
+                                ),
+                                fluidPage(
+                                  fluidRow(
+                                    tags$div("It can be seen from this figture that no matter what kind of hotel, the number of people staying in two is the most, followed by the hotel where one person stays, and the number of people staying in a family is the least.
+Therefore, it is recommended that the hotel, in terms of room type arrangements, should be mainly double rooms or couple rooms. Secondly, arrange single suites. This can maximize the hotel's space utilization and maximize revenue.",
+                                             style = "color:black;font-size: 20px;font-weight:normal;"),
+                                    br(),
+                                    plotOutput("density",height = "600px"),
+                                    br(),
+                                    tags$div("The picture describes how long people tend to book a hotel in advance. The blue line is his average value (one hundred days in advance). The picture shows that hotel guests are mostly temporary hotels, while customers in city hotels Book more in advance.
+Therefore, our suggestion is that for resort hotels, they should be more inclined to offline promotion, such as large physical billboards, luxurious exterior decorations, and shiny lights.
+For city hotels, online advertising should be promoted, because people book more in advance, so online advertising and some coupons can attract customers more accurately.",
+                                             style = "color:black;font-size: 20px;font-weight:normal;"),
+                                    plotOutput("density2"),
 
-                 )
-
-        ),
-        tabPanel("Customer Analysis",
-                 fluidRow(
-                   column(width = 12,
-                          HTML('<h2>When I should book my holidays?<h2/>'),
-                          HTML('<img src="https://media2.giphy.com/media/CM2G0NiOzjWjC/200w.gif?cid=ecf05e47kgciljmy76rnvv9kto6p8oygzx1koyz7dtq37ya1&rid=200w.gif" alt="Italian Trulli" width="300" height="200">')
-                   ),
-                   fluidPage(
-                   fluidRow(
-                     tags$div("In this part of our analysis we explore our datset from the point of view of
+                                    br(),
+                                    tags$div("This graph shows the frequency of people staying in hotels on weekends and weekdays. On weekdays, more people choose to stay for 1 to 3 nights. The average number is 2 nights. On weekends, people also choose to stay for 1 night. The number of people is more, followed by 2 nights. All in all, the proportion of customers renewing on Sunday is 2/1, while the proportion of customers renewing on weekdays is 2/5.
+Therefore, we recommend that hotels do more promotional activities during workdays to increase hotel occupancy rates and renewal rates during workdays.",
+                                             style = "color:black;font-size: 20px;font-weight:normal;"),
+                                    plotOutput("density3"))
+                                ),
+                                br(),
+                                fluidPage(
+                                  fluidRow(
+                                    tags$div("From the bar plots and density plot, people would clearly know that how close to the arrival data that customers have the most probability to cancel their current booking.",
+                                             style = "color:black;font-size: 20px;font-weight:normal;"),
+                                    br(),
+                                    tags$div("From the bar plots, it clearly shows that both of the two hotels have the similar distribution about the interval which represents the day between the original arrival day and the reservation cancelled day. People could find that to the City Hotel, most of the interval is between 0 to 270 days while to the Resort Hotel, that is between 0 to 150 days. ",
+                                             style = "color:black;font-size: 20px;font-weight:normal;"),
+                                    br(),
+                                    plotOutput("int"),
+                                    tags$div("The density plot shows a similar right skewed shape. The red line represents the average interval days of the City Hotel and the blue line represents the average interval days of the Resort Hotel. So it may help people to seize the opportunity to book this two hotels again 80 to 90 days before they want to stay if they do not reserve rooms before.",
+                                             style = "color:black;font-size: 20px;font-weight:normal;"),
+                                    br(),
+                                    plotOutput("int2"))
+                                )
+                       ),
+                       tabPanel("Customer Analysis",
+                                fluidRow(
+                                  column(width = 12,
+                                         HTML('<h2>When I should book my holidays?<h2/>'),
+                                         HTML('<img src="https://media2.giphy.com/media/CM2G0NiOzjWjC/200w.gif?cid=ecf05e47kgciljmy76rnvv9kto6p8oygzx1koyz7dtq37ya1&rid=200w.gif" alt="Italian Trulli" width="300" height="200">')
+                                  ),
+                                  fluidPage(
+                                    fluidRow(
+                                      tags$div("In this part of our analysis we explore our datset from the point of view of
                               a customer. As so, we will try to find patterns that can help customers book their
                               dream holidays.",
-                            style = "color:black;font-size: 20px;font-weight:normal;"),
-                   ),
-                   tags$div("We begin by oferring an overview of when you would expect to find
+                                               style = "color:black;font-size: 20px;font-weight:normal;"),
+                                    ),
+                                    tags$div("We begin by oferring an overview of when you would expect to find
                             yourself in a hotel full of people or settle for some a relaxed
                             time. For those that avoid crowds at all costs aim at days in red color.
                             The following is colored-calendar based on our historical data indicating the busiest
                             days of the years.",
-                            style = "color:black;font-size: 20px;font-weight:normal;"),
-                   br(),
-                   plotOutput("busy")
-                   ),
-                   br(),
-                   tags$div("Now that you know when to plan your holidays it's time to find some
+                                             style = "color:black;font-size: 20px;font-weight:normal;"),
+                                    br(),
+                                    plotOutput("busy")
+                                  ),
+                                  br(),
+                                  tags$div("Now that you know when to plan your holidays it's time to find some
                             cheap accomodation.",
-                            style = "color:black;font-size: 20px;font-weight:normal;"),
-                   br(),
-                   column(width = 4,
-                          box(
-                            selectInput("month", "Select Month", choices = sort(unique(hotel$arrival_date_month))),
-                            selectInput("adults", "Select number of adults", choices = c(1:10)),
-                            sliderInput("days", "Select Stay Length", min = 0, max = 100, value = 3),
-                            selectInput("children", "Select number of children/babies", choices = c(1:10)),
-                            selectInput("room", "Select Room Type", choices = sort(unique(hotel$reserved_room_type))),
-                            selectInput("meal", "Select Meal Type", choices = sort(unique(hotel$meal))),
+                                           style = "color:black;font-size: 20px;font-weight:normal;"),
+                                  br(),
+                                  column(width = 4,
+                                         box(
+                                           selectInput("month", "Select Month", choices = sort(unique(hotel$arrival_date_month))),
+                                           selectInput("adults", "Select number of adults", choices = c(1:10)),
+                                           sliderInput("days", "Select Stay Length", min = 0, max = 100, value = 3),
+                                           selectInput("children", "Select number of children/babies", choices = c(1:10)),
+                                           selectInput("room", "Select Room Type", choices = sort(unique(hotel$reserved_room_type))),
+                                           selectInput("meal", "Select Meal Type", choices = sort(unique(hotel$meal))),
 
-                          )
-                          ),
-                   column(width = 8,
-                   plotOutput("cheap", width = "800px", height = "700px")
-                   )
-                   ),
-                 br(),
-                 tags$div("Cheap tickets is a huge succes, but what if you arrive in a hotel full
+                                         )
+                                  ),
+                                  column(width = 8,
+                                         plotOutput("cheap", width = "800px", height = "700px")
+                                  )
+                                ),
+                                br(),
+                                tags$div("Cheap tickets is a huge succes, but what if you arrive in a hotel full
                           of crying children.",
-                          style = "color:black;font-size: 20px;font-weight:normal;"),
-                 column(width = 6,
-                 HTML('<img src="https://media2.giphy.com/media/10tIjpzIu8fe0/giphy.gif?cid=ecf05e47c9r4pxlsy283ca3716a1cxi5hq6lnsrpee4v2vsa&rid=giphy.gif">'
-                      ),
-                 box(
-                   selectInput("month", "Select Month", choices = sort(unique(hotel$arrival_date_month)))
-                 )
-                 ),
-                 column(width = 6,
-                 plotOutput("picto", width = "800px", height = "700px")
-                 )
-
-        ),
-        tabPanel("yugi",
-                 fluidRow(
-                   plotlyOutput("day"),
-                   plotOutput("month_book"),
-                   plotOutput("month_country")
-                 )
-
-                 ),
-        tabPanel("yiwen",
-                 fluidRow(
-                   plotOutput("grid"),
-                   plotOutput("int"),
-                   plotOutput("int2")
-
-                   )
-
-                 ),
-
-        tabPanel("chenjie",
-                 fluidRow(
-                   plotOutput("density"),
-                   plotOutput("density2"),
-                   plotOutput("density3"),
-                   plotOutput("density4")
-                 )),
+                                         style = "color:black;font-size: 20px;font-weight:normal;"),
+                                column(width = 6,
+                                       HTML('<img src="https://media2.giphy.com/media/10tIjpzIu8fe0/giphy.gif?cid=ecf05e47c9r4pxlsy283ca3716a1cxi5hq6lnsrpee4v2vsa&rid=giphy.gif">'
+                                       ),
+                                       box(
+                                         selectInput("month", "Select Month", choices = sort(unique(hotel$arrival_date_month)))
+                                       )
+                                ),
+                                column(width = 6,
+                                       plotOutput("picto", width = "800px", height = "700px")
+                                ),
+                                fluidPage(
+                                  fluidRow(
+                                    tags$div("It can be seen from this chart that no matter what kind of hotel it is, April, August, and December are the peak periods for hotels.
+For hotels, we recommend that more people be hired during this period to cope with the peak of passenger flow, so as not to reduce service quality, so as to bring a good experience to customers and increase the image of the hotel.
+For customers, we recommend avoiding travel during these three months, and being able to travel off peaks and enjoy better hotel services..",
+                                             style = "color:black;font-size: 20px;font-weight:normal;"),
+                                    br(),
+                                    plotOutput("density4"))),
+                                fluidPage(
+                                  fluidRow(
+                                    tags$div("People can find which country’s people most like to repeat to reserve the same hotel, the City Hotel or the Resort Hotel when they come to Portugal from the bar plots. They show the top 10 rank about the proportion of repeated guests for the Resort Hotel and the City Hotel from 2015 to 2017. It is obvious that the proportion of the Resort Hotel was much higher than that of the City Hotel.",
+                                             style = "color:black;font-size: 20px;font-weight:normal;"),
+                                    br(),
+                                    tags$div("The main reason for that may have something to do with the location of this two hotels. The City Hotel is located in the center of the country and there are more hotels in that place, so there are more options for customers to pick one hotel they like, while the Resort Hotel is located in the suburb, and there are not many options for customers to choose different hotels. So the proportion of repeated customers are higher in the Resort Hotel.",
+                                             style = "color:black;font-size: 20px;font-weight:normal;"),
+                                    plotOutput("grid")))
 
 
+                       ),
+                       tabPanel("yugi",
+                                fluidRow(
+
+                                  plotlyOutput("day"),
+                                  plotOutput("month_book"),
+                                  plotOutput("month_country")
+                                )
+
+                       ),
 
 
-        inverse = TRUE)),
+
+
+
+
+                       inverse = TRUE)),
     tabItem(tabName = "repro",
             fluidPage(
               tags$iframe(
                 src = './about.html',
-                          width = '100%', height = '800px',
-                          frameborder = 0, scrolling = 'auto'
+                width = '100%', height = '800px',
+                frameborder = 0, scrolling = 'auto'
               )
             )
     )
@@ -337,11 +374,11 @@ server <- function(input, output) {
 
   output$city <- renderPlot(
     city_prop %>%
-    ggplot(aes(fct_reorder(country, hotel_booking_prop), hotel_booking_prop )) +
-    background_image(city) +
-    geom_segment( aes(xend=country, yend=0), color="#5D7783", lwd = 1.6) +
-    geom_point( size=5, color="#DC493D", shape =19, ) +
-    coord_flip() +
+      ggplot(aes(fct_reorder(country, hotel_booking_prop), hotel_booking_prop )) +
+      background_image(city) +
+      geom_segment( aes(xend=country, yend=0), color="#5D7783", lwd = 1.6) +
+      geom_point( size=5, color="#DC493D", shape =19, ) +
+      coord_flip() +
       ggthemes::theme_solarized() +
       theme(
         axis.title.y = element_blank(),
@@ -358,13 +395,13 @@ server <- function(input, output) {
           size = 16
         ),
         title = element_text(colour = "black",
-                              size = 18),
+                             size = 18),
         axis.title.x.bottom = element_text(colour = "black",
                                            size = 18)
       ) +
-    labs(
-      y = "Proportion of City Hotel Bookings",
-      title = "Proportion of Bookings by Country fot the City Hotel"
+      labs(
+        y = "Proportion of City Hotel Bookings",
+        title = "Proportion of Bookings by Country fot the City Hotel"
       )
   )
 
@@ -490,79 +527,79 @@ server <- function(input, output) {
   })
 
 
-output$picto <- renderPlot({
+  output$picto <- renderPlot({
 
-  pictogram
+    pictogram
 
-})
-
-
-
-output$log <- renderPlot(
-
-  log
-)
-
-output$day <- renderPlotly(
-
-
-  ggplotly(g1)
-)
-
-
-output$month_book <- renderPlot(
-
-  month_book
-)
-
-
-output$month_country <- renderPlot(
-
-  month_country
-)
-
-
-output$grid <- renderPlot(
-
-  grid.arrange(prop_c,prop_r,ncol=2)
-)
-
-
-output$int <- renderPlot(
-
- interval
-)
-
-
-output$int2 <- renderPlot(
-
-  plot_combined
-)
+  })
 
 
 
+  output$log <- renderPlot(
 
-output$density <- renderPlot(
-  grid.arrange(q2, q1, ncol = 2)
-)
+    log
+  )
 
-output$density2 <-  renderPlot(
-
-  q3
-)
+  output$day <- renderPlotly(
 
 
-output$density3 <-  renderPlot(
+    ggplotly(g1)
+  )
 
-  grid.arrange(n, n1, ncol = 1)
 
-)
+  output$month_book <- renderPlot(
 
-output$density4 <-  renderPlot(
+    month_book
+  )
 
-  grid.arrange(mr, mc, ncol = 1)
 
-)
+  output$month_country <- renderPlot(
+
+    month_country
+  )
+
+
+  output$grid <- renderPlot(
+
+    grid.arrange(prop_c,prop_r,ncol=2)
+  )
+
+
+  output$int <- renderPlot(
+
+    interval
+  )
+
+
+  output$int2 <- renderPlot(
+
+    plot_combined
+  )
+
+
+
+
+  output$density <- renderPlot(
+    grid.arrange(q2, q1, ncol = 2)
+  )
+
+  output$density2 <-  renderPlot(
+
+    q3
+  )
+
+
+  output$density3 <-  renderPlot(
+
+    grid.arrange(n, n1, ncol = 1)
+
+  )
+
+  output$density4 <-  renderPlot(
+
+    grid.arrange(mr, mc, ncol = 1)
+
+  )
 
 }
 
