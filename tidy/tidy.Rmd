@@ -612,7 +612,7 @@ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
 
 ## Q8:Which country’s people most like to repeat to reserve these hotels?
-（it is a question about the customer/booking）
+（it is a question about the customer）
 
 People can find which country’s people most like to repeat to reserve the same hotel, City Hotel or Resort Hotel when they come to Portugal from the bar plots. 
 
@@ -666,7 +666,7 @@ grid.arrange(prop_c,prop_r,ncol=2)
 
 
 ## Q12:How close to the arrival date is the booking being cancelled?
-（it is a question about the hotel/cancelled）
+（it is a question about the hotel）
 
 From the bar plots and density plots, people would clearly know that how close to the arrival data that customers have the most probability to cancel current booking.
 
