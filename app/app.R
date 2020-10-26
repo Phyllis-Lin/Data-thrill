@@ -247,11 +247,26 @@ regular customer rate.</li>
                  )
 
         ),
-        tabPanel("yugi",
-                 fluidRow(
+        tabPanel("yuqi",
+                 tags$div("Click each day's rectangle to show details",
+                         style = "color:black;font-size: 20px;font-weight:normal;"
+                 ),
+                 br(),
+                fluidRow(
                    plotlyOutput("day"),
+                   tags$div("In 2016, 26th every month have more customers and 26th every month have more customers as we can see from the plot",
+                            style = "color:black;font-size: 20px;font-weight:normal;"
+                   ),
+                   br(),
                    plotOutput("month_book"),
-                   plotOutput("month_country")
+                   tags$div("October has most arrival customers in whole year, then is April and May. City hotel reserved much more than resort hotel.",
+                            style = "color:black;font-size: 20px;font-weight:normal;"
+                   ),
+                   br(),
+                   plotOutput("month_country"),
+                   tags$div("We choose Portugal and United Kingdom which are top two countries of booking and compared with Australia and China found that different countries ‘customer prefer to go these hotels in different seasons. For example, Chinese people prefer to go on February, September and October because Spring Festival in February and National Day in 1st October which are two biggest vacation in China. Portuguese people go on April, May and June most my because the Easter Day holiday. As we can see there is almost zero customer reserve resort hotel from Australia in December. Because during that time Australia is summer and around with pacific Oceans, citizens can enjoy the resort hotels in their country. Furthermore, we can found that English people prefer reserve resort hotel and Chinese people more like city hotel.",
+                            style = "color:black;font-size: 20px;font-weight:normal;"
+                   )
                  )
 
                  ),
