@@ -291,6 +291,23 @@ regular customer rate.</li>
 
 
         inverse = TRUE)),
+    tabItem(tabName = "about",
+            fluidRow(
+              box(
+                width = 10,
+                title = "About our project",
+                "This project is jointly completed by our team data thrills. The project analyzed hotel data from tidy Tuesday.",
+                br(),
+                "This report mainly analyzes from two aspects. On the one hand, it is from the user's perspective. For example, it is better to provide suggestions to customers when it is better to check in, and to book the time in advance. On the other hand, it analyzes from the perspective of the hotel, such as the peak of hotel occupancy, room type reservation, daily activity, customer source, etc., to provide suggestions for the hotel.",
+                br(),
+                h5("Built with",
+                   img(src = "https://www.rstudio.com/wp-content/uploads/2014/04/shiny.png", height = "30px"),
+                   "by",
+                   img(src = "https://www.rstudio.com/wp-content/uploads/2014/07/RStudio-Logo-Blue-Gray.png", height = "30px"),
+                   ".")
+              )
+            )
+    ),
     tabItem(tabName = "repro",
             fluidPage(
               tags$iframe(
