@@ -643,8 +643,8 @@ prop_c <- a%>%
   labs(title = "Repeated guest proportion of City Hotel from July 2015 to August 2017",
        x = "",
        y="proportion")+
-  theme(plot.title=element_text(size=7))+
-  geom_text(aes(label=prop),hjust = -0.008, size = 2)+
+  theme(plot.title=element_text(size=11.5))+
+  geom_text(aes(label=prop),hjust = -0.008, size = 2.5)+
   scale_y_continuous(breaks=seq(0,1,0.02))
 
 
@@ -657,8 +657,8 @@ prop_r <- a%>%
   labs(title = "Repeated guest proportion of Resort Hotel from July 2015 to August 2017",
        x = "",
        y="proportion")+
-  theme(plot.title=element_text(size=7))+
-  geom_text(aes(label=prop),hjust = -0.008, size = 2)+
+  theme(plot.title=element_text(size=11.5))+
+  geom_text(aes(label=prop),hjust = -0.008, size = 2.5)+
   scale_y_continuous(breaks=seq(0,1,0.2))
 
 grid.arrange(prop_c,prop_r,ncol=2)
@@ -698,23 +698,20 @@ interval <- plot_interval%>%
 
 ```{r Q12_2}
 interval_c <- plot_interval%>%
-  filter(hotel=="City Hotel")%>%
-  ggplot(aes(x = interval,
-             y = ..density..)) +
-  geom_density(fill = "white") +
-  geom_vline(xintercept = mean(plot_interval$interval),
-             colour = "red")+
-  labs(x="interval(day)")
+  filter(hotel=="City Hotel")
 
 interval_r <- plot_interval%>%
-  filter(hotel=="Resort Hotel")%>%
-  ggplot(aes(x = interval,
-             y = ..density..)) +
-  geom_density(fill = "white") +
-  geom_vline(xintercept = mean(plot_interval$interval),
+  filter(hotel=="Resort Hotel")
+
+plot_combined <- plot_interval%>%
+  ggplot(aes(interval,fill=as.factor(hotel)))+
+  geom_density(alpha=0.3)+
+  geom_vline(xintercept = mean(interval_c$interval),
              colour = "red")+
+  geom_vline(xintercept = mean(interval_r$interval),
+             colour = "blue")+
   labs(x="interval(day)")
 
-grid.arrange(interval_c,interval_r,ncol=2)
+plot_combined
 ```
 

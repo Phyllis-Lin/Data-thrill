@@ -536,7 +536,7 @@ output$int <- renderPlot(
 
 output$int2 <- renderPlot(
 
-  grid.arrange(interval_c,interval_r,ncol=2)
+  plot_combined
 )
 
 

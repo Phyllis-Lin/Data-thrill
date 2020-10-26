@@ -100,11 +100,9 @@ final <- na.omit(tidy)  # Delete the missing country observations
 ## Q8:Which country’s people most like to repeat to reserve these hotels?
 （it is a question about the customer/booking）
 
-People can find which country’s people most like to repeat to reserve the same hotel, City Hotel or Resort Hotel when they come to Portugal from the bar plots. 
+People can find which country’s people most like to repeat to reserve the same hotel, the City Hotel or the Resort Hotel when they come to Portugal from the bar plots. They show the top 10 rank about the proportion of repeated guests for the Resort Hotel and the City Hotel from 2015 to 2017. It is obvious that the proportion of the Resort Hotel was much higher than that of the City Hotel.
 
-The bar plots show the top 10 rank about the proportion of repeated guests for Resort Hotel and City Hotel for 2015 to 2017. It is obvious that the proportion of Resort Hotel was much higher than that of City Hotel. The proportion of customers from Portugal ranked first for City Hotel but it just ranked sixth for Resort Hotel.
-
-The main reason for that may have something to do with the location of this two hotels.The City Hotel is located in the center of the country and there are more hotels in that place, so there are more options for customers to pick one hotel they like.While the Resort Hotel is located in the suburb, and there are not many options for customers to choose different hotels.So the proportion of repeated customers are higher in the Resort Hotel.
+The main reason for that may have something to do with the location of this two hotels.The City Hotel is located in the center of the country and there are more hotels in that place, so there are more options for customers to pick one hotel they like, while the Resort Hotel is located in the suburb, and there are not many options for customers to choose different hotels.So the proportion of repeated customers are higher in the Resort Hotel.
 
 
 ```{r Q8_1}
@@ -154,14 +152,11 @@ grid.arrange(prop_c,prop_r,ncol=2)
 ## Q12:How close to the arrival date is the booking being cancelled?
 （it is a question about the hotel/cancelled）
 
-From the bar plots and density plots, people would clearly know that how close to the arrival data that customers have the most probability to cancel current booking.
+From the bar plots and density plot, people would clearly know that how close to the arrival data that customers have the most probability to cancel their current booking.
 
-It clearly shows that both of the two hotels have the similar distribution about the interval which represents the day between the original arrival day and the reservation cancelling day. 
+From the bar plots,it clearly shows that both of the two hotels have the similar distribution about the interval which represents the day between the original arrival day and the reservation cancelled day. People could find that to the City Hotel, most of the interval is between 0 to 270 days while to the Resort Hotel, that is between 0 to 150 days.
 
-From the bar plots, people could find that to City Hotel, most of the interval is between 0 to 270 days while to Resort Hotel, that is between 0 to 150 days.
-
-Both distributions in the density plots show a similar right skewed shape and they have the similar mean of the interval.
-
+The density plot shows a similar right skewed shape.The red line represents the average interval days of the City Hotel and the blue line represents the average interval days of the Resort Hotel.So it may help people to seize the opportunity to book this two hotels again 80 to 90 days before they want to stay if they do not reserve rooms before.
 
 ```{r Q12_1}
 library(lubridate)
@@ -184,22 +179,19 @@ plot_interval%>%
 
 ```{r Q12_2}
 interval_c <- plot_interval%>%
-  filter(hotel=="City Hotel")%>%
-  ggplot(aes(x = interval,
-             y = ..density..)) +
-  geom_density(fill = "white") +
-  geom_vline(xintercept = mean(plot_interval$interval),
-             colour = "red")+
-  labs(x="interval(day)")
+  filter(hotel=="City Hotel")
 
 interval_r <- plot_interval%>%
-  filter(hotel=="Resort Hotel")%>%
-  ggplot(aes(x = interval,
-             y = ..density..)) +
-  geom_density(fill = "white") +
-  geom_vline(xintercept = mean(plot_interval$interval),
+  filter(hotel=="Resort Hotel")
+
+plot_combined <- plot_interval%>%
+  ggplot(aes(interval,fill=as.factor(hotel)))+
+  geom_density(alpha=0.3)+
+  geom_vline(xintercept = mean(interval_c$interval),
              colour = "red")+
+  geom_vline(xintercept = mean(interval_r$interval),
+             colour = "blue")+
   labs(x="interval(day)")
 
-grid.arrange(interval_c,interval_r,ncol=2)
+plot_combined
 ```
