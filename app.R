@@ -87,9 +87,61 @@ regular customer rate.</li>
                         fluidRow(
                           tags$iframe(
                             src = 'https://www.sciencedirect.com/science/article/pii/S2352340918315191#f0010',
-                            width = '150%', height = '800px',
                             frameborder = 0, scrolling = 'auto'
-                          )
+                          ),
+                        HTML('Arel-Bundock, V, N Enevoldsen, and C Yetman (2018). countrycode: An R package to convert country
+names and country codes. Journal of Open Source Software 3(28), 848.
+Arnold, JB (2019). ggthemes: Extra Themes, Scales and Geoms for ’ggplot2’. R package version 4.2.0.
+https://CRAN.R-project.org/package=ggthemes.
+Auguie, B (2017). gridExtra: Miscellaneous Functions for "Grid" Graphics. R package version 2.3.
+https://CRAN.R-project.org/package=gridExtra.
+Auguie, B (2020). ggflags: Plot flags of the world in ggplot2. R package version 0.0.2.
+Bache, SM and H Wickham (2014). magrittr: A Forward-Pipe Operator for R. R package version 1.5.
+https://CRAN.R-project.org/package=magrittr.
+Brunson, JC (2020). ggalluvial: Layered Grammar for Alluvial Plots. Journal of Open Source Software
+5(49), 2017.
+Cheng, J, B Karambelkar, and Y Xie (2019). leaflet: Create Interactive Web Maps with the JavaScript
+’Leaflet’ Library. R package version 2.0.3. https://CRAN.R-project.org/package=leaflet.
+Grolemund, G and H Wickham (2011). Dates and Times Made Easy with lubridate. Journal of
+Statistical Software 40(3), 1–25.
+Kassambara, A (2020). ggpubr: ’ggplot2’ Based Publication Ready Plots. R package version 0.4.0.
+https://CRAN.R-project.org/package=ggpubr.
+Kothari, A (2018). ggTimeSeries: Time Series Visualisations Using the Grammar of Graphics. R package
+version 1.0.1. https://CRAN.R-project.org/package=ggTimeSeries.
+Nakagawara, R (2019). tvthemes: TV Show Themes and Color Palettes for ’ggplot2’ Graphics. R package
+version 1.1.0. https://CRAN.R-project.org/package=tvthemes.
+Neuwirth, E (2014). RColorBrewer: ColorBrewer Palettes. R package version 1.1-2. https://CRAN.Rproject.org/package=RColorBrewer.
+Ooms, J (2020). magick: Advanced Graphics and Image-Processing in R. R package version 2.5.0.
+https://CRAN.R-project.org/package=magick.
+Curie, Curie: 27 October 2020 3
+Expert advice from experts
+Pedersen, TL (2020a). patchwork: The Composer of Plots. R package version 1.0.1. https://CRAN.Rproject.org/package=patchwork.
+Pedersen, TL (2020b). transformr: Polygon and Path Transformations. R package version 0.1.3. https:
+//CRAN.R-project.org/package=transformr.
+Rudis, B (2020). hrbrthemes: Additional Themes, Theme Components and Utilities for ’ggplot2’. R
+package version 0.8.0. https://CRAN.R-project.org/package=hrbrthemes.
+Rudis, B and D Gandy (2019). waffle: Create Waffle Chart Visualizations. R package version 1.0.1.
+https://gitlab.com/hrbrmstr/waffle.
+Slowikowski, K (2020). ggrepel: Automatically Position Non-Overlapping Text Labels with ’ggplot2’. R
+package version 0.8.2. https://CRAN.R-project.org/package=ggrepel.
+Soage González, JC and N Pérez Veiga (2020). calendR: Ready to Print Monthly and Yearly Calendars
+Made with ’ggplot2’. R package version 1.1. https://CRAN.R-project.org/package=calendR.
+South, A (2011). rworldmap: A New R package for Mapping Global Data. The R Journal 3(1), 35–43.
+Tierney, N, D Cook, M McBain, and C Fay (2020). naniar: Data Structures, Summaries, and Visualisations
+for Missing Data. R package version 0.6.0. https://CRAN.R-project.org/package=naniar.
+Urbanek, S (2013). png: Read and write PNG images. R package version 0.1-7. https://CRAN.Rproject.org/package=png.
+Wickham, H (2016). ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York. https:
+//ggplot2.tidyverse.org.
+Wickham, H, M Averick, J Bryan, W Chang, LD McGowan, R François, G Grolemund, A Hayes, L Henry,
+J Hester, M Kuhn, TL Pedersen, E Miller, SM Bache, K Müller, J Ooms, D Robinson, DP Seidel,
+V Spinu, K Takahashi, D Vaughan, C Wilke, K Woo, and H Yutani (2019). Welcome to the tidyverse.
+Journal of Open Source Software 4(43), 1686.
+Wilke, CO (2020). ggtext: Improved Text Rendering Support for ’ggplot2’. R package version 0.1.0.
+https://CRAN.R-project.org/package=ggtext.
+Yu, G (2020). ggimage: Use Image in ’ggplot2’. R package version 0.2.8. https://CRAN.R-project.
+org/package=ggimage.
+Zeileis, A and G Grothendieck (2005). zoo: S3 Infrastructure for Regular and Irregular Time Series.
+Journal of Statistical Software 14(6), 1–27.')
                         ),
                       ))
 
@@ -172,9 +224,25 @@ regular customer rate.</li>
                                            leafletOutput("map", height = "500px")
                                   )
                                 ),
+                                br(),
                                 fluidRow(width = 12,
-                                         plotOutput("log", height = "600px")
-                                ),
+                                         column(width = 4,
+                                                box(
+                                                  selectInput("country",
+                                                              "Country:",
+                                                              c("All",
+                                                                unique(as.character(type$Country))),
+                                                              selected = "China"),
+                                                  selectInput("mon",
+                                                              "Arrive date month:",
+                                                              c("All",
+                                                                unique(as.character(type$arr_date_month))),
+                                                              selected = "10")
+                                                )
+                                         ),
+                                         column(width = 8,
+                                                plotOutput("polar", width = "800px", height = "700px")
+                                )),
                                 fluidPage(
                                   fluidRow(
                                     tags$div("It can be seen from this figture that no matter what kind of hotel, the number of people staying in two is the most, followed by the hotel where one person stays, and the number of people staying in a family is the least.
@@ -539,11 +607,16 @@ server <- function(input, output) {
   })
 
 
+  output$polar <- renderPlot({
+    p <- type %>% filter( arr_date_month == input$mon,
+                               Country == input$country) %>%
+      ggplot(aes(x= reserved_room_type , y = log(Number*2), fill = assigned_room_type)) +
+      geom_bar(stat = "identity", alpha = 0.7) +
+      coord_polar() +
+      facet_wrap(~arr_date_month)
+    p
+  })
 
-  output$log <- renderPlot(
-
-    log
-  )
 
   output$day <- renderPlotly(
 
