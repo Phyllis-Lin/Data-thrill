@@ -12,6 +12,16 @@ library(MASS)
 library(broom)
 library(ggResidpanel)
 library(fmsb)
+library(dplyr)
+library(gapminder)
+library(ggplot2)
+library(magrittr)
+library(sf)
+library(maps)
+library(rnaturalearth)
+library(leaflet)
+library(RColorBrewer)
+library(ggiraph)
 hotel <- read_csv("Data/tidy.csv") %>% dplyr::select(-X1)
 ```
 
@@ -21,48 +31,80 @@ booking <- hotel %>% dplyr::select(lead_time,
                                  is_canceled,
                                  reserved_room_type,
                                  assigned_room_type,
-                                 arr_date_month) %>%
-  filter(is_canceled == 0)
+                                 arr_date_month, Country) %>%
+  filter(is_canceled == 0) %>% 
+  mutate( change = ifelse(!reserved_room_type == assigned_room_type, 1,0),
+          reserved_room_type = case_when(reserved_room_type == "A" ~ 0,
+                                         reserved_room_type == "B" ~ 1,
+                                         reserved_room_type == "C" ~ 2,
+                                         reserved_room_type == "D" ~ 3,
+                                         reserved_room_type == "E" ~ 4,
+                                         reserved_room_type == "F" ~ 5,
+                                         reserved_room_type == "G" ~ 6,
+                                         reserved_room_type == "H" ~ 7,
+                                         reserved_room_type == "I" ~ 8),
+         assigned_room_type = case_when(assigned_room_type == "A" ~ 0,
+                                         assigned_room_type== "B" ~ 1,
+                                         assigned_room_type == "C" ~ 2,
+                                        assigned_room_type == "D" ~ 3,
+                                         assigned_room_type == "E" ~ 4,
+                                         assigned_room_type == "F" ~ 5,
+                                         assigned_room_type == "G" ~ 6,
+                                        assigned_room_type == "H" ~ 7,
+                                         assigned_room_type == "I" ~ 8)
+          )
+
 ```
 
 
 
-```{r}
+```{r type}
 type <- booking %>% 
-  filter(!reserved_room_type == assigned_room_type) %>%
-  group_by(reserved_room_type,assigned_room_type) %>%
-  count( name = "Number")
+   filter(!reserved_room_type == assigned_room_type) %>%
+  group_by(lead_time, arr_date_month) %>%
+  count( name = "Number") 
 
 ```
+
+
+```{r resid}
+resid_panel(mod, plots = "all")
+```
+
 
 ```{r check NA}
 Missing <- sapply(type, function(x) sum(is.na(x))) #check wether have mssing value in data set
 Missing
 ```
 
-```{r}
-ggplot(type, aes(x= reserved_room_type , y = Number,fill= assigned_room_type)) +
-  geom_bar(stat = "identity", alpha = 0.7)+
-  coord_polar()
+```{r A}
+A <- type %>% filter( arr_date_month == "10")
 ```
 
-```{r}
-mod = lm(lead_time ~ adr, data = booking)
-summary(mod)
+
+```{r ggplot}
+ggplot(type, aes(x = factor(arr_date_month), y = lead_time, size = Number)) +
+       geom_point(shape =21, colour = "#F8BBD0", fill = "#95CDF7") +    
+     scale_x_discrete( name = "Month" ) +
+     scale_y_continuous()
 ```
 
-```{r}
-resid_panel(mod, plots = "all")
+
+
+
+```{r coordplot}
+p <- ggplot(type, aes(x= reserved_room_type , y = log(Number*2), fill = assigned_room_type)) +
+  geom_bar(stat = "identity", alpha = 0.7) +
+ theme_minimal() +
+  coord_polar() +
+  facet_wrap(~arr_date_month)
+  
+
+p  
 ```
 
-```{r}
-day <- hotel %>% dplyr::select(lead_time,
-                                 adr,
-                                 is_canceled,
-                               Country) %>%
-                       filter(is_canceled == 0) %>%
-  group_by(Country) %>%
-  count()
-```
+
+
+
 
 
