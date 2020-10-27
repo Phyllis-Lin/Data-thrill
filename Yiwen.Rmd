@@ -98,7 +98,7 @@ final <- na.omit(tidy)  # Delete the missing country observations
 
 
 ## Q8:Which country’s people most like to repeat to reserve these hotels?
-（it is a question about the customer/booking）
+（it is a question about the customer）
 
 People can find which country’s people most like to repeat to reserve the same hotel, the City Hotel or the Resort Hotel when they come to Portugal from the bar plots. They show the top 10 rank about the proportion of repeated guests for the Resort Hotel and the City Hotel from 2015 to 2017. It is obvious that the proportion of the Resort Hotel was much higher than that of the City Hotel.
 
@@ -149,7 +149,7 @@ grid.arrange(prop_c,prop_r,ncol=2)
 
 
 ## Q12:How close to the arrival date is the booking being cancelled?
-（it is a question about the hotel/cancelled）
+（it is a question about the hotel）
 
 From the bar plots and density plot, people would clearly know that how close to the arrival data that customers have the most probability to cancel their current booking.
 

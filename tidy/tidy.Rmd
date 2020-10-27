@@ -614,12 +614,9 @@ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 ## Q8:Which country’s people most like to repeat to reserve these hotels?
 （it is a question about the customer）
 
-People can find which country’s people most like to repeat to reserve the same hotel, City Hotel or Resort Hotel when they come to Portugal from the bar plots. 
+People can find which country’s people most like to repeat to reserve the same hotel, the City Hotel or the Resort Hotel when they come to Portugal from the bar plots. They show the top 10 rank about the proportion of repeated guests for the Resort Hotel and the City Hotel from 2015 to 2017. It is obvious that the proportion of the Resort Hotel was much higher than that of the City Hotel.
 
-The bar plots show the top 10 rank about the proportion of repeated guests for Resort Hotel and City Hotel for 2015 to 2017. It is obvious that the proportion of Resort Hotel was much higher than that of City Hotel. The proportion of customers from Portugal ranked first for City Hotel but it just ranked sixth for Resort Hotel.
-
-The main reason for that may have something to do with the location of this two hotels.The City Hotel is located in the center of the country and there are more hotels in that place, so there are more options for customers to pick one hotel they like.While the Resort Hotel is located in the suburb, and there are not many options for customers to choose different hotels.So the proportion of repeated customers are higher in the Resort Hotel.
-
+The main reason for that may have something to do with the location of this two hotels.The City Hotel is located in the center of the country and there are more hotels in that place, so there are more options for customers to pick one hotel they like, while the Resort Hotel is located in the suburb, and there are not many options for customers to choose different hotels.So the proportion of repeated customers are higher in the Resort Hotel.
 
 ```{r Q8_1}
 
@@ -668,13 +665,11 @@ grid.arrange(prop_c,prop_r,ncol=2)
 ## Q12:How close to the arrival date is the booking being cancelled?
 （it is a question about the hotel）
 
-From the bar plots and density plots, people would clearly know that how close to the arrival data that customers have the most probability to cancel current booking.
+From the bar plots and density plot, people would clearly know that how close to the arrival data that customers have the most probability to cancel their current booking.
 
-It clearly shows that both of the two hotels have the similar distribution about the interval which represents the day between the original arrival day and the reservation cancelled day. 
+From the bar plots,it clearly shows that both of the two hotels have the similar distribution about the interval which represents the day between the original arrival day and the reservation cancelled day. People could find that to the City Hotel, most of the interval is between 0 to 270 days while to the Resort Hotel, that is between 0 to 150 days.
 
-From the bar plots, people could find that to City Hotel, most of the interval is between 0 to 270 days while to Resort Hotel, that is between 0 to 150 days.
-
-Both distributions in the density plots show a similar right skewed shape and they have the similar mean of the interval.
+The density plot shows a similar right skewed shape.The red line represents the average interval days of the City Hotel and the blue line represents the average interval days of the Resort Hotel.So it may help people to seize the opportunity to book this two hotels again 80 to 90 days before they want to stay if they do not reserve rooms before.
 
 
 ```{r Q12_1}
