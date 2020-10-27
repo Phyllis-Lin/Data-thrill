@@ -36,6 +36,13 @@ library(ggplot2)
 library(countrycode)
 library(lubridate)
 library(naniar)
+<<<<<<< HEAD
+=======
+hotels <- read.csv("data/hotels.csv")
+```
+
+```{r}
+>>>>>>> master
 library(tidyverse)
 library(calendR)
 library(gridExtra)
@@ -59,7 +66,11 @@ library(waffle)
 library(zoo)
 require(ggimage)
 require(magick)
+<<<<<<< HEAD
 hotels <- read.csv("data/hotels.csv")
+=======
+
+>>>>>>> master
 ```
 
 
@@ -120,6 +131,10 @@ vis_final
 
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 ```{r final}
 sec_mute <- sec_mute  %>% dplyr::select(-market_segment,
                                -distribution_channel,
@@ -212,12 +227,20 @@ resort <- readPNG("images/resort-hotel.png")
 
 
 
+<<<<<<< HEAD
 ```{r bookday}
+=======
+```{r}
+>>>>>>> master
 book_day <- final %>%
   filter(arrival_date_year == 2017) %>%
   filter(children == 0 & babies == 0) %>%
   filter(stays_in_week_nights == 5) %>%
+<<<<<<< HEAD
   dplyr::select(reservation_status_date, adr) %>%
+=======
+  select(reservation_status_date, adr) %>%
+>>>>>>> master
   arrange((adr)) %>%
   filter(adr != 0) %>%
   head(10) %>%
@@ -225,6 +248,13 @@ book_day <- final %>%
   mutate(day = as.Date(reservation_status_date) - as.Date(as.character("2017-01-01"), format="%Y-%m-%d")) %>%
   filter(day > 0)
 
+<<<<<<< HEAD
+=======
+
+
+
+
+>>>>>>> master
 calendar <- calendR(year = 2017,
         start = "M",
         special.days = book_day$day,
@@ -248,7 +278,11 @@ calendar <- calendR(year = 2017,
 
 
 
+<<<<<<< HEAD
 ```{r visitors}
+=======
+```{r}
+>>>>>>> master
 visitors <- final %>%
   mutate(Date = lubridate::as_date(
     str_c(arrival_date_year,
@@ -279,7 +313,11 @@ to_map <- final %>%
              is_canceled == 0 ~ n/total_bookings
            )
     ) %>%
+<<<<<<< HEAD
     dplyr::select(Country, total_bookings, contains("perc")) %>%
+=======
+    select(Country, total_bookings, contains("perc")) %>%
+>>>>>>> master
     pivot_longer(
       cols = contains("perc"),
       names_to = "outcome",
@@ -313,7 +351,11 @@ to_map <- final %>%
       fillOpacity = 1,
       color = ~pal_fun(color_perc) # use the rate of each state to find the correct color
     )
+<<<<<<< HEAD
   map
+=======
+  
+>>>>>>> master
 ```
 
 ```{r}
@@ -399,7 +441,11 @@ the contract customer is 4079,which is 3.416%
 the group customer is 577, which is 0.48%.
 ```{r}
 dt1 <-final %>%
+<<<<<<< HEAD
   dplyr::select(hotel,customer_type) %>%
+=======
+  select(hotel,customer_type) %>%
+>>>>>>> master
   count(customer_type)
 
 # dt1 = dt1[order(dt1$n, decreasing = TRUE),]   
@@ -434,7 +480,11 @@ Therefore, it is recommended that the hotel, in terms of room type arrangements,
 
 ```{r  the density plot by number of customers}
 age1<- final%>%
+<<<<<<< HEAD
   dplyr::select(hotel,adults,children,babies) %>%
+=======
+  select(hotel,adults,children,babies) %>%
+>>>>>>> master
   filter(hotel=="Resort Hotel") %>%
   mutate(all=adults+children+babies)
 
@@ -445,7 +495,11 @@ q1<-ggplot(age1, aes(x = all))+
   labs(title = "the density plot in resort-hotel")
 
 age2<- final%>%
+<<<<<<< HEAD
  dplyr::select(hotel,adults,children,babies) %>%
+=======
+  select(hotel,adults,children,babies) %>%
+>>>>>>> master
   filter(hotel=="City Hotel") %>%
   mutate(all=adults+children+babies)
 
@@ -464,7 +518,11 @@ Therefore, our suggestion is that for resort hotels, they should be more incline
 For city hotels, online advertising should be promoted, because people book more in advance, so online advertising and some coupons can attract customers more accurately.
 ```{r  leadtime}
 ltime <- final %>%
+<<<<<<< HEAD
  dplyr:: select(hotel,lead_time) 
+=======
+  select(hotel,lead_time) 
+>>>>>>> master
   
 q3<-ggplot(ltime, aes(x =lead_time))+
   geom_density(aes(color=hotel),alpha=0.4)+
@@ -478,7 +536,11 @@ This graph shows the frequency of people staying in hotels on weekends and weekd
 Therefore, we recommend that hotels do more promotional activities during workdays to increase hotel occupancy rates and renewal rates during workdays.
 ```{r}
 night <- final  %>%
+<<<<<<< HEAD
   dplyr::select(hotel,stays_in_week_nights) 
+=======
+  select(hotel,stays_in_week_nights) 
+>>>>>>> master
   
 n<-ggplot(night, aes(x =stays_in_week_nights))+
   geom_density(aes(color=stays_in_week_nights),fill="red3",alpha=0.4)+
@@ -487,7 +549,11 @@ n<-ggplot(night, aes(x =stays_in_week_nights))+
   labs(title = "Number of days to stay in the hotel on weekdays")
 
 night1 <- final %>%
+<<<<<<< HEAD
   dplyr::select(hotel,stays_in_weekend_nights) 
+=======
+  select(hotel,stays_in_weekend_nights) 
+>>>>>>> master
   
 n1<-ggplot(night1, aes(x =stays_in_weekend_nights))+
   geom_density(aes(color=stays_in_weekend_nights),fill="green3",alpha=0.4)+
@@ -504,7 +570,11 @@ For hotels, we recommend that more people be hired during this period to cope wi
 For customers, we recommend avoiding travel during these three months, and being able to travel off peaks and enjoy better hotel services.
 ```{r}
 month <- final %>%
+<<<<<<< HEAD
   dplyr::select(hotel,arrival_date_month,arrival_date_year) %>%
+=======
+  select(hotel,arrival_date_month,arrival_date_year) %>%
+>>>>>>> master
   filter(hotel=="Resort Hotel")
   
 mr<-ggplot(month, aes(x =arrival_date_month))+
@@ -517,7 +587,11 @@ mr<-ggplot(month, aes(x =arrival_date_month))+
 
 
 month2 <- final %>%
+<<<<<<< HEAD
   dplyr::select(hotel,arrival_date_month,arrival_date_year) %>%
+=======
+  select(hotel,arrival_date_month,arrival_date_year) %>%
+>>>>>>> master
   filter(hotel=="City Hotel")
   
 mc<-ggplot(month2, aes(x =arrival_date_month))+
@@ -566,7 +640,11 @@ month_book <- ggplot(month_2016,
 position = "stack") + 
   xlab("Month") +
 theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+<<<<<<< HEAD
 month_book
+=======
+
+>>>>>>> master
 ```
 
 2.Comparing the most reserved season by different hotel types with different countries.
@@ -709,6 +787,7 @@ interval_r <- plot_interval%>%
 
 grid.arrange(interval_c,interval_r,ncol=2)
 ```
+<<<<<<< HEAD
 ```{r booking}
 booking <- final %>% dplyr::select(lead_time,
                                  adr,
@@ -798,3 +877,7 @@ plot_combined <- plot_interval%>%
 
 plot_combined
 ```
+=======
+
+
+>>>>>>> master

@@ -1,0 +1,43 @@
+---
+title: "Reference"
+output: html_document
+bibliography: references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This project was written using R and shiny, the following packages were used to produce this project: 
+
+[@bichat]
+[@shin]
+[@kable]
+[@dply]
+[@Springer] 
+[@countrycode] 
+[@date] 
+[@naria]
+[@tidyverse] 
+[@calenr] 
+[@grid]
+[@ggal] 
+[@flags]
+[@ggoubr]
+[@ggrepel]
+[@text] 
+[@themes] 
+[@time]
+[@hebr] 
+[@leaf] 
+[@magir] 
+[@patch]
+[@png] 
+[@rcolor] 
+[@andy] 
+[@trans] 
+[@tv] 
+[@waffle]
+[@zoo]
+[@ggima] 
+[@magik]

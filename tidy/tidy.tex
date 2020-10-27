@@ -325,6 +325,7 @@
 \setstretch{1.5}
 
 %% Any special functions or other packages can be loaded here.
+<<<<<<< HEAD
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
@@ -339,6 +340,8 @@
 \usepackage[normalem]{ulem}
 \usepackage{makecell}
 \usepackage{xcolor}
+=======
+>>>>>>> master
 
 
 \begin{document}
@@ -346,8 +349,13 @@
 
 \begin{Shaded}
 \begin{Highlighting}[]
+<<<<<<< HEAD
 \NormalTok{Miss_final <-}\StringTok{ }\KeywordTok{vis_miss}\NormalTok{(hotels, }\DataTypeTok{warn_large_data =}\OtherTok{FALSE}\NormalTok{) }\CommentTok{# Check mssing value }
 \NormalTok{Miss_final}
+=======
+\NormalTok{Miss\_tidy \textless{}{-}}\StringTok{ }\KeywordTok{vis\_miss}\NormalTok{(hotels, }\DataTypeTok{warn\_large\_data =}\OtherTok{FALSE}\NormalTok{) }\CommentTok{\# Check mssing value }
+\NormalTok{Miss\_tidy}
+>>>>>>> master
 \end{Highlighting}
 \end{Shaded}
 
@@ -355,12 +363,17 @@
 
 \begin{Shaded}
 \begin{Highlighting}[]
+<<<<<<< HEAD
 \NormalTok{hotel <-}\StringTok{ }\KeywordTok{na.omit}\NormalTok{(hotels)}
+=======
+\NormalTok{hotel \textless{}{-}}\StringTok{ }\KeywordTok{na.omit}\NormalTok{(hotels)}
+>>>>>>> master
 \end{Highlighting}
 \end{Shaded}
 
 \begin{Shaded}
 \begin{Highlighting}[]
+<<<<<<< HEAD
 \NormalTok{hotel <-}\StringTok{ }\NormalTok{hotel }\OperatorTok{%>%}\StringTok{ }\KeywordTok{mutate}\NormalTok{(}
     \DataTypeTok{arr_date_month =} \KeywordTok{case_when}\NormalTok{(   }\CommentTok{# change Month to the numeric }
 \NormalTok{    arrival_date_month}\OperatorTok{==}\StringTok{"January"} \OperatorTok{~}\StringTok{ }\DecValTok{01}\NormalTok{,}
@@ -390,12 +403,45 @@
                                       \DataTypeTok{destination =} \StringTok{"country.name"}\NormalTok{),}
           \DataTypeTok{reservation_status_date=}\KeywordTok{ymd}\NormalTok{(reservation_status_date),}
          \DataTypeTok{arrival_time=}\KeywordTok{ymd}\NormalTok{(arrival_time)) }
+=======
+\NormalTok{hotel \textless{}{-}}\StringTok{ }\NormalTok{hotel }\OperatorTok{\%\textgreater{}\%}\StringTok{ }\KeywordTok{mutate}\NormalTok{(}
+    \DataTypeTok{arr\_date\_month =} \KeywordTok{case\_when}\NormalTok{(   }\CommentTok{\# change Month to the numeric }
+\NormalTok{    arrival\_date\_month}\OperatorTok{==}\StringTok{"January"} \OperatorTok{\textasciitilde{}}\StringTok{ }\DecValTok{01}\NormalTok{,}
+\NormalTok{    arrival\_date\_month}\OperatorTok{==}\StringTok{"February"} \OperatorTok{\textasciitilde{}}\StringTok{ }\DecValTok{02}\NormalTok{,}
+\NormalTok{    arrival\_date\_month}\OperatorTok{==}\StringTok{"March"} \OperatorTok{\textasciitilde{}}\StringTok{ }\DecValTok{03}\NormalTok{,}
+\NormalTok{    arrival\_date\_month}\OperatorTok{==}\StringTok{"April"} \OperatorTok{\textasciitilde{}}\StringTok{ }\DecValTok{04}\NormalTok{,}
+\NormalTok{    arrival\_date\_month}\OperatorTok{==}\StringTok{"May"} \OperatorTok{\textasciitilde{}}\StringTok{ }\DecValTok{05}\NormalTok{,}
+\NormalTok{    arrival\_date\_month}\OperatorTok{==}\StringTok{"June"} \OperatorTok{\textasciitilde{}}\StringTok{ }\DecValTok{06}\NormalTok{,}
+\NormalTok{    arrival\_date\_month}\OperatorTok{==}\StringTok{"July"} \OperatorTok{\textasciitilde{}}\StringTok{ }\DecValTok{07}\NormalTok{,}
+\NormalTok{    arrival\_date\_month}\OperatorTok{==}\StringTok{"August"} \OperatorTok{\textasciitilde{}}\StringTok{ }\DecValTok{08}\NormalTok{,}
+\NormalTok{    arrival\_date\_month}\OperatorTok{==}\StringTok{"September"} \OperatorTok{\textasciitilde{}}\StringTok{ }\DecValTok{09}\NormalTok{,}
+\NormalTok{    arrival\_date\_month}\OperatorTok{==}\StringTok{"October"} \OperatorTok{\textasciitilde{}}\StringTok{ }\DecValTok{10}\NormalTok{,}
+\NormalTok{    arrival\_date\_month}\OperatorTok{==}\StringTok{"November"} \OperatorTok{\textasciitilde{}}\StringTok{ }\DecValTok{11}\NormalTok{,}
+\NormalTok{    arrival\_date\_month}\OperatorTok{==}\StringTok{"December"} \OperatorTok{\textasciitilde{}}\StringTok{ }\DecValTok{12}\NormalTok{),}
+    \DataTypeTok{country =} \KeywordTok{str\_replace}\NormalTok{(country, }\DataTypeTok{pattern =} \StringTok{"cn"}\NormalTok{, }\DataTypeTok{replacement =} \StringTok{"chn"}\NormalTok{), }\CommentTok{\# replace China pattern}
+    \DataTypeTok{deposit =} \KeywordTok{case\_when}\NormalTok{(deposit\_type }\OperatorTok{==}\StringTok{ "No Deposit"}\OperatorTok{\textasciitilde{}}\DecValTok{0}\NormalTok{,            }\CommentTok{\# Change deposit as binary numeric}
+\NormalTok{                        deposit\_type }\OperatorTok{==}\StringTok{ "Non Refund"}\OperatorTok{\textasciitilde{}}\DecValTok{1}\NormalTok{,}
+\NormalTok{                         deposit\_type }\OperatorTok{==}\StringTok{ "Refundable"}\OperatorTok{\textasciitilde{}}\DecValTok{2}\NormalTok{),}
+   \DataTypeTok{arrival\_time=}\KeywordTok{paste}\NormalTok{(arrival\_date\_year,}
+\NormalTok{                      arrival\_date\_month,}
+\NormalTok{                      arrival\_date\_day\_of\_month,}
+                      \DataTypeTok{sep=}\StringTok{"{-}"}\NormalTok{))}
+\NormalTok{  sec\_mute \textless{}{-}}\StringTok{ }\NormalTok{hotel }\OperatorTok{\%\textgreater{}\%}\StringTok{ }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Country =} \KeywordTok{countrycode}\NormalTok{(}\DataTypeTok{sourcevar =}\NormalTok{ country,              }\CommentTok{\# According the country code to find the country full name}
+                                      \DataTypeTok{origin =} \StringTok{"iso3c"}\NormalTok{,}
+                                      \DataTypeTok{destination =} \StringTok{"country.name"}\NormalTok{),}
+          \DataTypeTok{reservation\_status\_date=}\KeywordTok{ymd}\NormalTok{(reservation\_status\_date),}
+         \DataTypeTok{arrival\_time=}\KeywordTok{ymd}\NormalTok{(arrival\_time)) }
+>>>>>>> master
 \end{Highlighting}
 \end{Shaded}
 
 \begin{Shaded}
 \begin{Highlighting}[]
+<<<<<<< HEAD
 \NormalTok{Miss <-}\StringTok{ }\KeywordTok{sapply}\NormalTok{(hotels, }\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{sum}\NormalTok{(}\KeywordTok{is.na}\NormalTok{(x))) }\CommentTok{# Check mssing value }
+=======
+\NormalTok{Miss \textless{}{-}}\StringTok{ }\KeywordTok{sapply}\NormalTok{(hotels, }\ControlFlowTok{function}\NormalTok{(x) }\KeywordTok{sum}\NormalTok{(}\KeywordTok{is.na}\NormalTok{(x))) }\CommentTok{\# Check mssing value }
+>>>>>>> master
 \NormalTok{Miss}
 \end{Highlighting}
 \end{Shaded}
@@ -437,6 +483,7 @@
 
 \begin{Shaded}
 \begin{Highlighting}[]
+<<<<<<< HEAD
 \NormalTok{vis_final <-}\StringTok{ }\KeywordTok{vis_miss}\NormalTok{(sec_mute, }\DataTypeTok{warn_large_data =}\OtherTok{FALSE}\NormalTok{)}
 \NormalTok{vis_final}
 \end{Highlighting}
@@ -1332,11 +1379,28 @@ Both distributions in the density plots show a similar right skewed shape and th
 \begin{Highlighting}[]
 \NormalTok{A <-}\StringTok{ }\NormalTok{type }\OperatorTok{%>%}\StringTok{ }\KeywordTok{filter}\NormalTok{( arr_date_month }\OperatorTok{==}\StringTok{ "10"}\NormalTok{,}
 \NormalTok{                      Country }\OperatorTok{==}\StringTok{ "United Kingdom"}\NormalTok{)}
+=======
+\NormalTok{vis\_tidy \textless{}{-}}\StringTok{ }\KeywordTok{vis\_miss}\NormalTok{(sec\_mute, }\DataTypeTok{warn\_large\_data =}\OtherTok{FALSE}\NormalTok{)}
+\NormalTok{vis\_tidy}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{tidy_files/figure-latex/sectidy-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sec\_mute \textless{}{-}}\StringTok{ }\NormalTok{sec\_mute  }\OperatorTok{\%\textgreater{}\%}\StringTok{ }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(}\OperatorTok{{-}}\NormalTok{market\_segment,}
+                               \OperatorTok{{-}}\NormalTok{distribution\_channel,}
+                               \OperatorTok{{-}}\NormalTok{deposit\_type,}
+                               \OperatorTok{{-}}\NormalTok{agent,}
+                               \OperatorTok{{-}}\NormalTok{company) }
+>>>>>>> master
 \end{Highlighting}
 \end{Shaded}
 
 \begin{Shaded}
 \begin{Highlighting}[]
+<<<<<<< HEAD
 \KeywordTok{ggplot}\NormalTok{(type, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{factor}\NormalTok{(arr_date_month), }\DataTypeTok{y =}\NormalTok{ lead_time, }\DataTypeTok{size =}\NormalTok{ Number)) }\OperatorTok{+}
 \StringTok{       }\KeywordTok{geom_point}\NormalTok{(}\DataTypeTok{shape =}\DecValTok{21}\NormalTok{, }\DataTypeTok{colour =} \StringTok{"#95CDF7"}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"#F8BBD0"}\NormalTok{) }\OperatorTok{+}\StringTok{    }
 \StringTok{     }\KeywordTok{scale_x_discrete}\NormalTok{( }\DataTypeTok{name =} \StringTok{"Month"}\NormalTok{ ) }\OperatorTok{+}
@@ -1386,8 +1450,17 @@ Both distributions in the density plots show a similar right skewed shape and th
 \end{verbatim}
 
 \includegraphics{tidy_files/figure-latex/intervaldensity-1.pdf}
+=======
+\NormalTok{final \textless{}{-}}\StringTok{ }\KeywordTok{na.omit}\NormalTok{(sec\_mute)  }\CommentTok{\# Delete the missing country observations}
+\end{Highlighting}
+\end{Shaded}
+
+>>>>>>> master
 
 \printbibliography
 
 \end{document}
+<<<<<<< HEAD
 
+=======
+>>>>>>> master

@@ -11,6 +11,7 @@ forcats
 countrycode
 lubridate
 naniar
+<<<<<<< HEAD
 calendR
 gridExtra
 ggalluvial
@@ -36,3 +37,5 @@ ggimage
 magick
 plotly
 kableExtra
+=======
+>>>>>>> master
