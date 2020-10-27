@@ -1,0 +1,15 @@
+---
+title: "Citations"
+date: "26/10/2020"
+output: html_document
+bibliography: references.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## References
+
+[@kableExtra]
+[@dplyr]

@@ -1,45 +1,12 @@
----
-title: "Expert advice from experts"
-author:
-- familyname: Curie
-  othernames: Marie
-  address: University of Paris
-  email: mcurie.notreal@gmail.com
-  correspondingauthor: true
-  qualifications: Nobel Prize, PhD
-- familyname: Curie
-  othernames: Pierre
-  address: University of Paris
-  qualifications: Nobel Prize, PhD
-department: Department of\newline Econometrics &\newline Business Statistics
-organization: Acme Corporation
-bibliography: references.bib
-biblio-style: authoryear-comp
-linestretch: 1.5
-output:
-  MonashEBSTemplates::report:
-    fig_caption: yes
-    fig_height: 5
-    fig_width: 8
-    includes:
-      in_header: preamble.tex
-    keep_tex: yes
-    number_sections: yes
-    citation_package: biblatex
-    toc: false
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, cache=TRUE, messages=FALSE, warning=FALSE)
+## ----setup, include=FALSE-----------------------------------------------------------
 # Make sure you have the latest versions of rmarkdown and bookdown installed
 library(ggplot2)
 library(countrycode)
 library(lubridate)
 library(naniar)
-hotels <- read.csv("data/hotels.csv")
-```
 
-```{r}
+
+## -----------------------------------------------------------------------------------
 library(tidyverse)
 library(calendR)
 library(gridExtra)
@@ -64,81 +31,11 @@ library(zoo)
 require(ggimage)
 require(magick)
 
-```
 
 
-```{r check NA}
-Miss_final <- vis_miss(hotels, warn_large_data =FALSE) # Check mssing value 
-Miss_final
-```
+final <- readRDS("final.rds")
 
 
-```{r clean missing}
-hotel <- na.omit(hotels)
-```
-
-```{r change_format}
-hotel <- hotel %>% mutate(
-    arr_date_month = case_when(   # change Month to the numeric 
-    arrival_date_month=="January" ~ 01,
-    arrival_date_month=="February" ~ 02,
-    arrival_date_month=="March" ~ 03,
-    arrival_date_month=="April" ~ 04,
-    arrival_date_month=="May" ~ 05,
-    arrival_date_month=="June" ~ 06,
-    arrival_date_month=="July" ~ 07,
-    arrival_date_month=="August" ~ 08,
-    arrival_date_month=="September" ~ 09,
-    arrival_date_month=="October" ~ 10,
-    arrival_date_month=="November" ~ 11,
-    arrival_date_month=="December" ~ 12),
-    country = str_replace(country, pattern = "cn", replacement = "chn"), # replace China pattern
-    deposit = case_when(deposit_type == "No Deposit"~0,            # Change deposit as binary numeric
-                        deposit_type == "Non Refund"~1,
-                         deposit_type == "Refundable"~2),
-   arrival_time=paste(arrival_date_year,
-                      arrival_date_month,
-                      arrival_date_day_of_month,
-                      sep="-"))
-
-
-  sec_mute <- hotel %>% mutate(Country = countrycode(sourcevar = country,              # According the country code to find the country full name
-                                      origin = "iso3c",
-                                      destination = "country.name"),
-          reservation_status_date=ymd(reservation_status_date),
-         arrival_time=ymd(arrival_time)) 
-```
-
-
-```{r}
-Miss <- sapply(hotels, function(x) sum(is.na(x))) # Check mssing value 
-Miss
-```
-
-
-
-```{r secfinal}
-vis_final <- vis_miss(sec_mute, warn_large_data =FALSE)
-vis_final
-```
-
-
-
-```{r final}
-sec_mute <- sec_mute  %>% dplyr::select(-market_segment,
-                               -distribution_channel,
-                               -deposit_type,
-                               -agent,
-                               -company) 
-```
-
-
-```{r}
-final <- na.omit(sec_mute)  # Delete the missing country observations
-```
-
-
-```{r}
 bookings_table <- final %>%
   filter(!country == "NULL") %>%      # In some observations we don't know the country
   count(country, hotel, is_canceled)
@@ -210,13 +107,11 @@ sample_countries <- c(common_countries, diff_countries)
 
 # Proportion of visits in the Resort Hotel
 
-city <- readPNG("images/city-hotel.png")
-resort <- readPNG("images/resort-hotel.png")
-```
+city <- readPNG("www/CopyOfcity-hotel.png")
+resort <- readPNG("www/CopyOfresort-hotel.png")
 
 
-
-```{r}
+## -----------------------------------------------------------------------------------
 book_day <- final %>%
   filter(arrival_date_year == 2017) %>%
   filter(children == 0 & babies == 0) %>%
@@ -251,32 +146,25 @@ calendar <- calendR(year = 2017,
     title = "Cheapest Day to book"
   )
 
-```
 
 
-
-
-```{r}
+## -----------------------------------------------------------------------------------
 visitors <- final %>%
   mutate(Date = lubridate::as_date(
     str_c(arrival_date_year,
           arrival_date_month,
           arrival_date_day_of_month,
           sep = "/"))) %>%
-  group_by(hotel) %>% 
+  group_by(hotel) %>%
   count(arrival_date_year, Date) %>%
   mutate(above_average = case_when(
     n > mean(n) ~ 1,
     n <= mean(n) ~ 0
   ))
 
-```
 
 
-
-
-
-```{r}
+## -----------------------------------------------------------------------------------
 to_map <- final %>%
     mutate(Country = as.factor(Country)) %>%
     count(Country, is_canceled) %>%
@@ -298,23 +186,23 @@ to_map <- final %>%
     na.omit() %>%
     ungroup() %>%
     filter(outcome == "perc_cancel")
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
   mapCountry<- maps::map("world", fill = TRUE, plot = FALSE)
-  
-  
+
+
   match(mapCountry$names, final$Country)
-  
+
   pal_fun <- colorQuantile(rev(brewer.pal(3,"RdYlGn")), NULL, n = 7,)
-  
-  
+
+
   color_perc <- to_map$percentage[match(mapCountry$names, to_map$Country)]
-  
-  
+
+
   map <- leaflet(mapCountry) %>% # create a blank canvas
     addProviderTiles("NASAGIBS.ViirsEarthAtNight2012") %>%
     addPolygons( # draw polygons on top of the base map (tile)
@@ -323,10 +211,10 @@ to_map <- final %>%
       fillOpacity = 1,
       color = ~pal_fun(color_perc) # use the rate of each state to find the correct color
     )
-  
-```
 
-```{r}
+
+
+## -----------------------------------------------------------------------------------
 pictogram <- final %>%
   count(hotel, arrival_date_month, adults, children, babies) %>%
   pivot_longer(cols = c("adults", "children", "babies"),
@@ -355,25 +243,21 @@ pictogram <- final %>%
   theme(legend.text = element_text(size = 10, hjust = 0, vjust = 0.75))
 
 
+save(final,  file = "final.rda")
 
 
 
-```
 
-
-```{r}
+## -----------------------------------------------------------------------------------
 final$arrival_date_month <- factor(final$arrival_date_month,
                                                       levels = c(
                                                         "January",   "February",  "March",     "April",
                                                         "May",       "June",      "July",      "August",
                                                         "September", "October",   "November",  "December")
 )
-```
 
 
-
-
-```{r}
+## -----------------------------------------------------------------------------------
 reg_data <- final %>%
   mutate(total_youth = children + babies,
          stay_length = stays_in_week_nights + stays_in_weekend_nights,
@@ -404,53 +288,39 @@ log <- ggplot(mod_aug, aes(x = stay_length, y = y_hat)) +
 
 
 
-```
 
 
-
-----------
-
-1.What is the percentage of customer's type who book a hotel?
-the transient customer is 89613, which is 74.682%
-the transient-party customer is 25120, which is 21.04%
-the contract customer is 4079,which is 3.416%
-the group customer is 577, which is 0.48%.
-```{r}
+## -----------------------------------------------------------------------------------
 dt1 <-final %>%
   select(hotel,customer_type) %>%
   count(customer_type)
 
-# dt1 = dt1[order(dt1$n, decreasing = TRUE),]   
-# myLabel = as.vector(dt1$customer_type)   
-# #myLabel = paste(myLabel, "(", round(dt$n / sum(dt$n) * 100, 2), "%)", sep = "")   
+# dt1 = dt1[order(dt1$n, decreasing = TRUE),]
+# myLabel = as.vector(dt1$customer_type)
+# #myLabel = paste(myLabel, "(", round(dt$n / sum(dt$n) * 100, 2), "%)", sep = "")
 
-# 
+#
 # pp = ggplot(dt, aes(x = "", y = n, fill = customer_type)) +
-#   geom_bar(stat = "identity", width = 0.5) +  
-#   coord_polar(theta = "y") + 
-#   theme_bw() + 
-#   labs(x = "", y = "", title = "") + 
-#   theme(axis.ticks = element_blank()) + 
-#   #theme(legend.position = "none") + 
+#   geom_bar(stat = "identity", width = 0.5) +
+#   coord_polar(theta = "y") +
+#   theme_bw() +
+#   labs(x = "", y = "", title = "") +
+#   theme(axis.ticks = element_blank()) +
+#   #theme(legend.position = "none") +
 #   theme(legend.title = element_blank(), legend.position = "left")+
 #   #geom_text(aes(y = n/20 + c(0, cumsum(n)[-length(n)]), x = sum(n)/20, label = myLabel), size = 2)+
 #   #geom_text(vjust=0.3,hjust=0.4)+
-#   theme(axis.text.x = element_blank()) + 
-#   theme(panel.grid=element_blank()) +   
+#   theme(axis.text.x = element_blank()) +
+#   theme(panel.grid=element_blank()) +
 #   theme(panel.border=element_blank())+
 #   labs(title = "the presentage of customer type")
 # pp
-# 
-#  
- 
-```
+#
+#
 
 
-2.People staying in hotels tend to be one person, couples, or multiple people？
-It can be seen from this figture that no matter what kind of hotel, the number of people staying in two is the most, followed by the hotel where one person stays, and the number of people staying in a family is the least.
-Therefore, it is recommended that the hotel, in terms of room type arrangements, should be mainly double rooms or couple rooms. Secondly, arrange single suites. This can maximize the hotel's space utilization and maximize revenue.
 
-```{r  the density plot by number of customers}
+## ----the density plot by number of customers----------------------------------------
 age1<- final%>%
   select(hotel,adults,children,babies) %>%
   filter(hotel=="Resort Hotel") %>%
@@ -473,31 +343,25 @@ q2<-ggplot(age2, aes(x = all))+
   xlab("the number of customers in city-hotel") +
   labs(title = "the density plot in city-hotel")
 
-grid.arrange(q2, q1, ncol = 2)
-```
 
-3.How long do people book hotels in advance？
-The picture describes how long people tend to book a hotel in advance. The blue line is his average value (one hundred days in advance). The picture shows that hotel guests are mostly temporary hotels, while customers in city hotels Book more in advance.
-Therefore, our suggestion is that for resort hotels, they should be more inclined to offline promotion, such as large physical billboards, luxurious exterior decorations, and shiny lights.
-For city hotels, online advertising should be promoted, because people book more in advance, so online advertising and some coupons can attract customers more accurately.
-```{r  leadtime}
+
+
+## ----leadtime-----------------------------------------------------------------------
 ltime <- final %>%
-  select(hotel,lead_time) 
-  
+  select(hotel,lead_time)
+
 q3<-ggplot(ltime, aes(x =lead_time))+
   geom_density(aes(color=hotel),alpha=0.4)+
   geom_vline(xintercept = mean(ltime$lead_time),color="blue", linetype="dashed")+
   labs(title = "the density of booking hotel days in advance")+
   xlab("the number of day booking hotel in advance")
-q3
-```
 
-This graph shows the frequency of people staying in hotels on weekends and weekdays. On weekdays, more people choose to stay for 1 to 3 nights. The average number is 2 nights. On weekends, people also choose to stay for 1 night. The number of people is more, followed by 2 nights. All in all, the proportion of customers renewing on Sunday is 2/1, while the proportion of customers renewing on weekdays is 2/5.
-Therefore, we recommend that hotels do more promotional activities during workdays to increase hotel occupancy rates and renewal rates during workdays.
-```{r}
+
+
+## -----------------------------------------------------------------------------------
 night <- final  %>%
-  select(hotel,stays_in_week_nights) 
-  
+  select(hotel,stays_in_week_nights)
+
 n<-ggplot(night, aes(x =stays_in_week_nights))+
   geom_density(aes(color=stays_in_week_nights),fill="red3",alpha=0.4)+
   geom_vline(xintercept = mean(night$stays_in_week_nights),color="blue", linetype="dashed")+
@@ -505,31 +369,27 @@ n<-ggplot(night, aes(x =stays_in_week_nights))+
   labs(title = "Number of days to stay in the hotel on weekdays")
 
 night1 <- final %>%
-  select(hotel,stays_in_weekend_nights) 
-  
+  select(hotel,stays_in_weekend_nights)
+
 n1<-ggplot(night1, aes(x =stays_in_weekend_nights))+
   geom_density(aes(color=stays_in_weekend_nights),fill="green3",alpha=0.4)+
   geom_vline(xintercept = mean(night1$stays_in_weekend_nights),color="blue", linetype="dashed")+
   xlim(0,10)+
   labs(title = "Number of days to stay in the hotel on weekdays")
 
-grid.arrange(n, n1, ncol = 1)
-```
 
-What month is the peak of the hotel?
-It can be seen from this chart that no matter what kind of hotel it is, April, August, and December are the peak periods for hotels.
-For hotels, we recommend that more people be hired during this period to cope with the peak of passenger flow, so as not to reduce service quality, so as to bring a good experience to customers and increase the image of the hotel.
-For customers, we recommend avoiding travel during these three months, and being able to travel off peaks and enjoy better hotel services.
-```{r}
+
+
+## -----------------------------------------------------------------------------------
 month <- final %>%
   select(hotel,arrival_date_month,arrival_date_year) %>%
   filter(hotel=="Resort Hotel")
-  
+
 mr<-ggplot(month, aes(x =arrival_date_month))+
   geom_density(aes(color=arrival_date_year),fill="greenyellow",alpha=0.4)+
   theme(axis.text.x = element_text(angle = 90))+
   labs(title = "the customer density plot by month in resort-hotel")+
-  geom_vline(xintercept = mean(month$arrival_date_month),color="blue", linetype="dashed")+
+  geom_vline(xintercept = mean(month$arrival_date_month, na.rm = TRUE),color="blue", linetype="dashed")+
   facet_wrap(~arrival_date_year)
 
 
@@ -537,26 +397,18 @@ mr<-ggplot(month, aes(x =arrival_date_month))+
 month2 <- final %>%
   select(hotel,arrival_date_month,arrival_date_year) %>%
   filter(hotel=="City Hotel")
-  
+
 mc<-ggplot(month2, aes(x =arrival_date_month))+
   geom_density(aes(color=arrival_date_year),fill="red3",alpha=0.3)+
   theme(axis.text.x = element_text(angle = 90))+
   labs(title = "the customer density plot by month in city-hotel")+
-  geom_vline(xintercept = mean(month$arrival_date_month),color="blue", linetype="dashed")+
+  geom_vline(xintercept = mean(month$arrival_date_month, na.rm = TRUE),color="blue", linetype="dashed")+
   facet_wrap(~arrival_date_year)
 
-grid.arrange(mr, mc, ncol = 1)
-```
-
-
---------
 
 
 
-1.Which day of the month is most common and which season (or month) has more customers in the whole year?
-
-
-```{r}
+## -----------------------------------------------------------------------------------
 library(plotly)
 month_2016 <- final %>%
   filter(arrival_date_year == 2016) %>%
@@ -566,41 +418,37 @@ month_2016 <- final %>%
 g1 <- ggplot(month_2016,
        aes(x=arrival_date_day_of_month, y=Count, color=arrival_date_month)) +
   xlab("Arrival day") +
-  geom_col() + 
-theme(axis.text.x = element_text()) 
-  
-ggplotly(g1)
-
-```
+  geom_col() +
+theme(axis.text.x = element_text())
 
 
-```{r}
+
+
+
+## -----------------------------------------------------------------------------------
 month_2016$arrival_date_month <- factor (month_2016$arrival_date_month,
                      levels = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"))
 
 month_book <- ggplot(month_2016,
        aes(x=arrival_date_month, y=Count, fill=hotel)) +
-  geom_bar(stat = "identity", 
-position = "stack") + 
+  geom_bar(stat = "identity",
+position = "stack") +
   xlab("Month") +
 theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
 
-```
-
-2.Comparing the most reserved season by different hotel types with different countries.
-
-```{r}
-library(kableExtra)
-library(dplyr)
-Top10Country <- final %>%
-  count(Country, sort = T) %>%
-  head(10) %>%
-  kable(caption = "Top10 coutries reserved")
-Top10Country
-```
 
 
-```{r}
+## -----------------------------------------------------------------------------------
+# library(kableExtra)
+# library(dplyr)
+# Top10Country <- final %>%
+#   count(Country, sort = T) %>%
+#   head(10) %>%
+#   kable(caption = "Top10 coutries reserved")
+# Top10Country
+
+
+## -----------------------------------------------------------------------------------
 month_countries <- final %>%
   filter(arrival_date_year == 2016,
          Country %in%c("Portugal", "United Kingdom", "Australia", "China")) %>%
@@ -611,27 +459,14 @@ month_countries$arrival_date_month <- factor (month_countries$arrival_date_month
 
 month_country <- ggplot(month_countries,
        aes(x=arrival_date_month, y=Count, fill=hotel)) +
-  geom_bar(stat = "identity", 
-position = "stack") + 
+  geom_bar(stat = "identity",
+position = "stack") +
   xlab("Month") +
   facet_wrap(~Country, scales = "free_y") +
 theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
-```
-
--------------
 
 
-## Q8:Which country’s people most like to repeat to reserve these hotels?
-（it is a question about the customer/booking）
-
-People can find which country’s people most like to repeat to reserve the same hotel, City Hotel or Resort Hotel when they come to Portugal from the bar plots. 
-
-The bar plots show the top 10 rank about the proportion of repeated guests for Resort Hotel and City Hotel for 2015 to 2017. It is obvious that the proportion of Resort Hotel was much higher than that of City Hotel. The proportion of customers from Portugal ranked first for City Hotel but it just ranked sixth for Resort Hotel.
-
-The main reason for that may have something to do with the location of this two hotels.The City Hotel is located in the center of the country and there are more hotels in that place, so there are more options for customers to pick one hotel they like.While the Resort Hotel is located in the suburb, and there are not many options for customers to choose different hotels.So the proportion of repeated customers are higher in the Resort Hotel.
-
-
-```{r Q8_1}
+## ----Q8_1---------------------------------------------------------------------------
 
 a <- final%>%
   select(hotel,Country,is_repeated_guest)%>%
@@ -640,7 +475,7 @@ a <- final%>%
   rename(not_repeated_guest="0",repeated_guest="1")%>%
   filter(!is.na(repeated_guest))%>%
   mutate(prop=round(repeated_guest/(not_repeated_guest+repeated_guest),digits=3))%>%
-  arrange(desc(prop))%>% 
+  arrange(desc(prop))%>%
   ungroup()%>%
   slice_head(n =20)
 
@@ -671,23 +506,10 @@ prop_r <- a%>%
   geom_text(aes(label=prop),hjust = -0.008, size = 2)+
   scale_y_continuous(breaks=seq(0,1,0.2))
 
-grid.arrange(prop_c,prop_r,ncol=2)
-```
 
 
-## Q12:How close to the arrival date is the booking being cancelled?
-（it is a question about the hotel/cancelled）
 
-From the bar plots and density plots, people would clearly know that how close to the arrival data that customers have the most probability to cancel current booking.
-
-It clearly shows that both of the two hotels have the similar distribution about the interval which represents the day between the original arrival day and the reservation cancelling day. 
-
-From the bar plots, people could find that to City Hotel, most of the interval is between 0 to 270 days while to Resort Hotel, that is between 0 to 150 days.
-
-Both distributions in the density plots show a similar right skewed shape and they have the similar mean of the interval.
-
-
-```{r Q12_1}
+## ----Q12_1--------------------------------------------------------------------------
 library(lubridate)
 plot_interval<- final%>%
   filter(is_canceled==1)%>%
@@ -704,9 +526,9 @@ interval <- plot_interval%>%
   theme(axis.text.x=element_text(angle=90))+
   labs(x="interval(day)")+
   facet_wrap(~hotel)
-```
 
-```{r Q12_2}
+
+## ----Q12_2--------------------------------------------------------------------------
 interval_c <- plot_interval%>%
   filter(hotel=="City Hotel")%>%
   ggplot(aes(x = interval,
@@ -725,80 +547,26 @@ interval_r <- plot_interval%>%
              colour = "red")+
   labs(x="interval(day)")
 
-grid.arrange(interval_c,interval_r,ncol=2)
-```
 
 
 
-```{r booking}
 booking <- final %>% dplyr::select(lead_time,
-                                 adr,
-                                 is_canceled,
-                                 reserved_room_type,
-                                 assigned_room_type,
-                                 arr_date_month, Country) %>%
-  filter(is_canceled == 0) 
-  # mutate( change = ifelse(!reserved_room_type == assigned_room_type, 1,0),
-  #         reserved_room_type = case_when(reserved_room_type == "A" ~ 0,
-  #                                        reserved_room_type == "B" ~ 1,
-  #                                        reserved_room_type == "C" ~ 2,
-  #                                        reserved_room_type == "D" ~ 3,
-  #                                        reserved_room_type == "E" ~ 4,
-  #                                        reserved_room_type == "F" ~ 5,
-  #                                        reserved_room_type == "G" ~ 6,
-  #                                        reserved_room_type == "H" ~ 7,
-  #                                        reserved_room_type == "I" ~ 8),
-  #        assigned_room_type = case_when(assigned_room_type == "A" ~ 0,
-  #                                        assigned_room_type== "B" ~ 1,
-  #                                        assigned_room_type == "C" ~ 2,
-  #                                       assigned_room_type == "D" ~ 3,
-  #                                        assigned_room_type == "E" ~ 4,
-  #                                        assigned_room_type == "F" ~ 5,
-  #                                        assigned_room_type == "G" ~ 6,
-  #                                       assigned_room_type == "H" ~ 7,
-  #                                        assigned_room_type == "I" ~ 8)
-  #         )
-```
+                                   adr,
+                                   is_canceled,
+                                   reserved_room_type,
+                                   assigned_room_type,
+                                   arr_date_month, Country) %>%
+  filter(is_canceled == 0)
 
 
 
-```{r type}
-type <- booking %>% 
-   filter(!reserved_room_type == assigned_room_type) %>%
+type <- booking %>%
+  filter(!reserved_room_type == assigned_room_type) %>%
   group_by(lead_time, arr_date_month,reserved_room_type,assigned_room_type, Country) %>%
-  count( name = "Number") 
-```
+  count( name = "Number")
 
 
 
-```{r Acord}
-A <- type %>% filter( arr_date_month == "10",
-                      Country == "United Kingdom")
-```
-
-
-```{r leadtimeplot}
-ggplot(type, aes(x = factor(arr_date_month), y = lead_time, size = Number)) +
-       geom_point(shape =21, colour = "#95CDF7", fill = "#F8BBD0") +    
-     scale_x_discrete( name = "Month" ) +
-     scale_y_continuous()
-```
-
-
-
-
-```{r coordplot}
-p <- ggplot(A, aes(x= reserved_room_type , y = log(Number*2), fill = assigned_room_type)) +
-  geom_bar(stat = "identity", alpha = 0.7) +
- theme_minimal() +
-  coord_polar() 
-  
-p  
-```
-
-
-
-```{r intervaldensity}
 interval_c <- plot_interval%>%
   filter(hotel=="City Hotel")
 
@@ -815,7 +583,3 @@ plot_combined <- plot_interval%>%
   labs(x="interval(day)")
 
 plot_combined
-```
-
-
-

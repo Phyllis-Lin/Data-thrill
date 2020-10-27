@@ -1,10 +1,6 @@
 library(calendR)
-library(ECharts2Shiny)
-library(echarts4r)
 library(ggalluvial)
-library(gganimate)
 library(ggflags)
-library(ggpol)
 library(ggpubr)
 library(ggrepel)
 library(ggtext)
@@ -25,53 +21,29 @@ require(ggimage)
 require(magick)
 
 
+#
+# # Get Image for City Hotel and write it in images folder
+#
+#   image_read(path = "https://images.fineartamerica.com/images/artworkimages/mediumlarge/3/rua-augusta-arch-lisbon-portugal-black-and-white-carol-japp.jpg") %>%
+#   image_charcoal() %>%
+#   magick::image_write(format = "png", path = here::here("tidy/images/city-hotel.png"))
 
 
-
-
-# Get Image for City Hotel and write it in images folder
-
-  image_read(path = "https://images.fineartamerica.com/images/artworkimages/mediumlarge/3/rua-augusta-arch-lisbon-portugal-black-and-white-carol-japp.jpg") %>%
-  image_charcoal() %>%
-  magick::image_write(format = "png", path = here::here("tidy/images/city-hotel.png"))
-
-
-# Get Image for Resort Hotel and write it in images folder
-
- image_read(path = "https://static.outdoorvisit.com/photos/regular/4/b/4b9333fb-ccc3-47f7-aaab-b850783c5a80.jpg") %>%
- image_charcoal() %>%  # make it chackroal
- image_fill("lightblue", point = "+50+400", fuzz = 4 ) %>%  #  give it some color
- magick::image_write(format = "png", path = here::here("tidy/images/resort-hotel.png"))
+# # Get Image for Resort Hotel and write it in images folder
+#
+#  image_read(path = "https://static.outdoorvisit.com/photos/regular/4/b/4b9333fb-ccc3-47f7-aaab-b850783c5a80.jpg") %>%
+#  image_charcoal() %>%  # make it chackroal
+#  image_fill("lightblue", point = "+50+400", fuzz = 4 ) %>%  #  give it some color
+#  magick::image_write(format = "png", path = here::here("tidy/images/resort-hotel.png"))
 
 
 # Work with tibble format
 
-hotel_new <- hotel %>%
-  as_tibble()
 
-# Small change iso3c country code of China is wrong it should be chn not ch
-# and turn country column from iso3c format to country.name format
-
-hotel_new <- hotel_new %>%
-  mutate(country = str_replace(country, pattern = "cn", replacement = "chn"),
-         country = countrycode::countrycode(sourcevar = country,
-                                            origin = "iso3c",
-                                            destination = "country.name")
-  )
-
-
-# This plot shows the Number of bookings made by country and
-#  the fill indicates the percentage of those bookings that actualy arrived to the hotel
-
-### This goes to the report
-
-
-
-
- hotel_new %>%
-  mutate(country = as.factor(country)) %>%
-  count(country, is_canceled) %>%
-  group_by(country) %>%
+final %>%
+  mutate(Country = as.factor(Country)) %>%
+  count(Country, is_canceled) %>%
+  group_by(Country) %>%
   mutate(total_bookings = sum(n),
          perc_cancel = case_when(
            is_canceled == 1 ~ n/total_bookings
@@ -80,7 +52,7 @@ hotel_new <- hotel_new %>%
            is_canceled == 0 ~ n/total_bookings
          )
   ) %>%
-  select(country, total_bookings, contains("perc")) %>%
+  select(Country, total_bookings, contains("perc")) %>%
   pivot_longer(
     cols = contains("perc"),
     names_to = "outcome",
@@ -89,13 +61,13 @@ hotel_new <- hotel_new %>%
   arrange(desc(total_bookings)) %>%
   na.omit() %>%
   ungroup() %>%
-  filter(country != "PRT" & country!= "NULL") %>%
+  #filter(country != "PRT" & country!= "NULL") %>%
   slice_head(n = 20) %>%
-  mutate(code = tolower(countrycode::countrycode(sourcevar = country,
+  mutate(code = tolower(countrycode::countrycode(sourcevar = Country,
                                                  origin =  "country.name",
                                                  destination = "iso2c"))) %>%
   filter(outcome == "perc_arrived") %>%
-  ggplot(aes(fct_reorder(country, -total_bookings), total_bookings, fill = percentage)) +
+  ggplot(aes(fct_reorder(Country, -total_bookings), total_bookings, fill = percentage)) +
   geom_col() +
   ggflags::geom_flag(y = -1 ,aes(country = code), size = 6, show.legend = FALSE) +
   scale_country() +
@@ -148,17 +120,6 @@ hotel_new <- hotel_new %>%
 
 
 
-# here I explore adr by country
-hotel %>%
-  select(country,arrival_date_year, arrival_date_month, stays_in_week_nights, stays_in_weekend_nights, adults, children, babies, adr) %>%
-  group_by(country, arrival_date_year, arrival_date_month, stays_in_week_nights, stays_in_weekend_nights,
-           adults, children, babies) %>%
-  summarise(country_avg_adr = mean(adr)) %>%
-  filter(country_avg_adr !=0) %>%
-  filter(adults == 2,children == 0 & babies == 0 ) %>%
-  arrange(arrival_date_month, stays_in_week_nights, stays_in_weekend_nights) %>%
-  View()
-
 
 
 
@@ -166,7 +127,7 @@ hotel %>%
 
 # Shows how many bookings each country has made for either resort or hotel
 # and how many of those were canceled or proceeded normally
-bookings_table <- hotel_new %>%
+bookings_table <- final %>%
   filter(!country == "NULL") %>%      # In some observations we don't know the country
   count(country, hotel, is_canceled)
 
@@ -180,8 +141,6 @@ bookings_by_countries <- bookings_table %>%
   mutate(booking_prop = total_bookings/sum(total_bookings, na.rm = TRUE) * 100) %>%
   arrange(desc(total_bookings))
 
-bookings_by_countries %>%
-  head(10)
 
 ## I show this in the first figure no need to add it again
 
@@ -296,7 +255,7 @@ resort <- readPNG("tidy/images/resort-hotel.png")
 
 # Explore this plots monthly in next questions and later use is_canceled
 
-bookings_table_per_month <- hotel_new %>%
+bookings_table_per_month <- final %>%
   filter(!country == "NULL") %>%
   count(country, hotel, arrival_date_month)
 
@@ -475,7 +434,7 @@ install.packages("calendR")
 
 
 
-book_day <- hotels %>%
+book_day <- final %>%
   filter(arrival_date_year == 2017) %>%
   filter(children == 0 & babies == 0) %>%
   filter(stays_in_week_nights == 5) %>%
@@ -551,7 +510,7 @@ hotel_new %>%
 
 
 
-visitors <- hotel_new %>%
+visitors <- final %>%
   mutate(Date = lubridate::as_date(
     str_c(arrival_date_year,
           arrival_date_month,
@@ -599,62 +558,60 @@ ggplot_calendar_heatmap(
 
 ## try to add 3D
 
-to_map <- hotel_new %>%
-mutate(country = as.factor(country)) %>%
-  count(country, is_canceled) %>%
-  group_by(country) %>%
-  mutate(total_bookings = sum(n),
-         perc_cancel = case_when(
-           is_canceled == 1 ~ n/total_bookings
-         ),
-         perc_arrived = case_when(
-           is_canceled == 0 ~ n/total_bookings
-         )
-  ) %>%
-  select(country, total_bookings, contains("perc")) %>%
-  pivot_longer(
-    cols = contains("perc"),
-    names_to = "outcome",
-    values_to = "percentage"
-  ) %>%
-  na.omit() %>%
-  ungroup() %>%
-  filter(outcome == "perc_cancel")
+  to_map <- final %>%
+    mutate(Country = as.factor(Country)) %>%
+    count(Country, is_canceled) %>%
+    group_by(Country) %>%
+    mutate(total_bookings = sum(n),
+           perc_cancel = case_when(
+             is_canceled == 1 ~ n/total_bookings
+           ),
+           perc_arrived = case_when(
+             is_canceled == 0 ~ n/total_bookings
+           )
+    ) %>%
+    select(Country, total_bookings, contains("perc")) %>%
+    pivot_longer(
+      cols = contains("perc"),
+      names_to = "outcome",
+      values_to = "percentage"
+    ) %>%
+    na.omit() %>%
+    ungroup() %>%
+    filter(outcome == "perc_cancel")
 
 
 
 
 
 
-mapCountry<- maps::map("world", fill = TRUE, plot = FALSE)
+  mapCountry<- maps::map("world", fill = TRUE, plot = FALSE)
 
 
-match(mapCountry$names, hotel_new$country)
+  match(mapCountry$names, final$Country)
 
-pal_fun <- colorQuantile(rev(brewer.pal(3,"RdYlGn")), NULL, n = 7,)
-
-
-color_perc <- to_map$percentage[match(mapCountry$names, to_map$country)]
+  pal_fun <- colorQuantile(rev(brewer.pal(3,"RdYlGn")), NULL, n = 7,)
 
 
-map <- leaflet(mapCountry) %>% # create a blank canvas
-  addProviderTiles("NASAGIBS.ViirsEarthAtNight2012") %>%
-  addPolygons( # draw polygons on top of the base map (tile)
-    stroke = FALSE,
-    smoothFactor = 0.2,
-    fillOpacity = 1,
-    color = ~pal_fun(color_perc) # use the rate of each state to find the correct color
-  )
-
-map
+  color_perc <- to_map$percentage[match(mapCountry$names, to_map$Country)]
 
 
+  map <- leaflet(mapCountry) %>% # create a blank canvas
+    addProviderTiles("NASAGIBS.ViirsEarthAtNight2012") %>%
+    addPolygons( # draw polygons on top of the base map (tile)
+      stroke = FALSE,
+      smoothFactor = 0.2,
+      fillOpacity = 1,
+      color = ~pal_fun(color_perc) # use the rate of each state to find the correct color
+    )
+
+  map
 
 
 
 
 
-pictogram <- hotel %>%
+pictogram <- final %>%
   count(hotel, arrival_date_month, adults, children, babies) %>%
   pivot_longer(cols = c("adults", "children", "babies"),
                names_to = "group",
@@ -691,7 +648,7 @@ pictogram <- hotel %>%
 
 
 
-reg_data <- hotel_new %>%
+reg_data <- final %>%
   mutate(total_youth = children + babies,
          stay_length = stays_in_week_nights + stays_in_weekend_nights,
          family = case_when(
@@ -720,7 +677,3 @@ log <- ggplot(mod_aug, aes(x = stay_length, y = y_hat)) +
 
 
 
-hotel_new %>%
-  count(hotel, arrival_date_month, is_canceled) %>%
-  group_by(hotel, arrival_date_month ) %>%
-  mutate(prop = n/sum(n) * 100)
