@@ -36,10 +36,6 @@ library(ggplot2)
 library(countrycode)
 library(lubridate)
 library(naniar)
-hotels <- read.csv("data/hotels.csv")
-```
-
-```{r}
 library(tidyverse)
 library(calendR)
 library(gridExtra)
@@ -63,7 +59,7 @@ library(waffle)
 library(zoo)
 require(ggimage)
 require(magick)
-
+hotels <- read.csv("data/hotels.csv")
 ```
 
 
@@ -216,7 +212,7 @@ resort <- readPNG("images/resort-hotel.png")
 
 
 
-```{r}
+```{r bookday}
 book_day <- final %>%
   filter(arrival_date_year == 2017) %>%
   filter(children == 0 & babies == 0) %>%
@@ -228,10 +224,6 @@ book_day <- final %>%
   as_tibble() %>%
   mutate(day = as.Date(reservation_status_date) - as.Date(as.character("2017-01-01"), format="%Y-%m-%d")) %>%
   filter(day > 0)
-
-
-
-
 
 calendar <- calendR(year = 2017,
         start = "M",
@@ -256,7 +248,7 @@ calendar <- calendR(year = 2017,
 
 
 
-```{r}
+```{r visitors}
 visitors <- final %>%
   mutate(Date = lubridate::as_date(
     str_c(arrival_date_year,
@@ -718,7 +710,7 @@ interval_r <- plot_interval%>%
 grid.arrange(interval_c,interval_r,ncol=2)
 ```
 ```{r booking}
-booking <- hotel %>% dplyr::select(lead_time,
+booking <- final %>% dplyr::select(lead_time,
                                  adr,
                                  is_canceled,
                                  reserved_room_type,
@@ -788,7 +780,7 @@ p
 
 
 
-```{r Q12_2}
+```{r intervaldensity}
 interval_c <- plot_interval%>%
   filter(hotel=="City Hotel")
 

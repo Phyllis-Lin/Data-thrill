@@ -21,27 +21,17 @@ sidebar <- dashboardSidebar(
   sidebarMenu(
     menuItem (text = "Topic",
               tabName = "dashboard",
-              icon = icon(name = "home")
+              icon = icon("home")
     ),
-    menuItem(text = "Methodology",
-             tabName = "inputs",
-             icon = icon("sitemap")),
-
     menuItem(text = "Data Wrangling",
              tabName = "wrangle",
              icon = icon("tools")),
     menuItem(text = "Analysis",
              tabName = "analysis",
              icon = icon("chart-bar")),
-    menuItem(text = "Authors",
-             tabName = "autohors",
-             icon = icon("user-friends")),
     menuItem(text = "About",
              tabName = "about",
-             icon = icon("question")),
-    menuItem(text = "Reproducibility",
-             tabName = "repro",
-             icon = icon("redo" ,"fa-spin"))
+             icon = icon("question"))
   )
 )
 
@@ -92,7 +82,7 @@ regular customer rate.</li>
 
              ),
              tabPanel("Dataset", ""),
-             tabPanel("Source", "",
+             tabPanel("Source",
                       fluidPage(
                         fluidRow(
                           tags$iframe(
@@ -107,16 +97,14 @@ regular customer rate.</li>
 
       )
     ),
-    tabItem(tabName = "inputs",
-            fluidRow(
-              box(
-                width = 10,
-                title = "Cleaning Process",
-                "Mpla mpal mpla "
-              )
-            )
-    ),
-    tabItem(tabName = "wrangle"),
+
+    tabItem(tabName = "wrangle",
+              fluidRow(
+                box(
+                  width = 10,
+                  title = "Data cleaning",
+                  h4("Likely, the dataset used in this analysis was in a very tidy format already, so only minor adjustments were required to get the data in a more convenient format.  We used the geocode package to extract the full name of the countries from their iso3c code. Furthermore, we used the `naniar` package to identify the percentage of missing values in our dataset. In addition, we used `lubridate` to convert some of our variables to Date objects. Luckily, the missing values were a very small proportion of our data, so we decided to remove them."),
+                  br()))),
     tabItem(tabName = "analysis",
             navbarPage(footer =  HTML('<span style="color:black;font-size: 20px;
                             font-weight:bold;">
@@ -322,12 +310,6 @@ For customers, we recommend avoiding travel during these three months, and being
 
                        ),
 
-
-
-
-
-
-
                        inverse = TRUE)),
     tabItem(tabName = "about",
             fluidRow(
@@ -343,15 +325,6 @@ For customers, we recommend avoiding travel during these three months, and being
                    "by",
                    img(src = "https://www.rstudio.com/wp-content/uploads/2014/07/RStudio-Logo-Blue-Gray.png", height = "30px"),
                    ".")
-              )
-            )
-    ),
-    tabItem(tabName = "repro",
-            fluidPage(
-              tags$iframe(
-                src = './about.html',
-                width = '100%', height = '800px',
-                frameborder = 0, scrolling = 'auto'
               )
             )
     )
@@ -409,7 +382,7 @@ server <- function(input, output) {
       ggplot(aes(fct_reorder(country, hotel_booking_prop), hotel_booking_prop )) +
       background_image(city) +
       geom_segment( aes(xend=country, yend=0), color="#5D7783", lwd = 1.6) +
-      geom_point( size=5, color="#DC493D", shape =19, ) +
+      geom_point( size=5, color="#DC493D", shape =19) +
       coord_flip() +
       ggthemes::theme_solarized() +
       theme(
@@ -482,7 +455,7 @@ server <- function(input, output) {
           margin = margin(4, 0, 0, 0),
           linetype = 1,
           r = grid::unit(8, "pt"),
-          fill = "azure1",
+          fill = "azure1"
         ),
         legend.title = element_textbox_simple(
           width = NULL,
@@ -490,7 +463,7 @@ server <- function(input, output) {
           margin = margin(4, 0, 0, 0),
           linetype = 1,
           r = grid::unit(8, "pt"),
-          fill = "azure1",
+          fill = "azure1"
         ),
         plot.title = element_markdown(face = "bold",
                                       size = 14),

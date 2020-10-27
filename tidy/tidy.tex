@@ -346,184 +346,6 @@
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(tidyverse)}
-\KeywordTok{library}\NormalTok{(calendR)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## ~~ Package calendR
-## Visit https://r-coder.com/ for R tutorials ~~
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(gridExtra)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## 
-## Attaching package: 'gridExtra'
-\end{verbatim}
-
-\begin{verbatim}
-## The following object is masked from 'package:dplyr':
-## 
-##     combine
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(ggalluvial)}
-\KeywordTok{library}\NormalTok{(ggflags)}
-\KeywordTok{library}\NormalTok{(ggpubr)}
-\KeywordTok{library}\NormalTok{(ggrepel)}
-\KeywordTok{library}\NormalTok{(ggtext)}
-\KeywordTok{library}\NormalTok{(ggthemes)}
-\KeywordTok{library}\NormalTok{(ggTimeSeries)}
-\KeywordTok{library}\NormalTok{(hrbrthemes)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## NOTE: Either Arial Narrow or Roboto Condensed fonts are required to use these themes.
-\end{verbatim}
-
-\begin{verbatim}
-##       Please use hrbrthemes::import_roboto_condensed() to install Roboto Condensed and
-\end{verbatim}
-
-\begin{verbatim}
-##       if Arial Narrow is not on your system, please see https://bit.ly/arialnarrow
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(leaflet)}
-\KeywordTok{library}\NormalTok{(magrittr)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## 
-## Attaching package: 'magrittr'
-\end{verbatim}
-
-\begin{verbatim}
-## The following object is masked from 'package:purrr':
-## 
-##     set_names
-\end{verbatim}
-
-\begin{verbatim}
-## The following object is masked from 'package:tidyr':
-## 
-##     extract
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(patchwork)}
-\KeywordTok{library}\NormalTok{(png)}
-\KeywordTok{library}\NormalTok{(RColorBrewer)}
-\KeywordTok{library}\NormalTok{(rworldmap)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## Loading required package: sp
-\end{verbatim}
-
-\begin{verbatim}
-## ### Welcome to rworldmap ###
-\end{verbatim}
-
-\begin{verbatim}
-## For a short introduction type :   vignette('rworldmap')
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(transformr)}
-\KeywordTok{library}\NormalTok{(tvthemes)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## 
-## Attaching package: 'tvthemes'
-\end{verbatim}
-
-\begin{verbatim}
-## The following objects are masked from 'package:hrbrthemes':
-## 
-##     import_roboto_condensed, import_titillium_web
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(waffle)}
-\KeywordTok{library}\NormalTok{(zoo)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## 
-## Attaching package: 'zoo'
-\end{verbatim}
-
-\begin{verbatim}
-## The following objects are masked from 'package:base':
-## 
-##     as.Date, as.Date.numeric
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{require}\NormalTok{(ggimage)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## Loading required package: ggimage
-\end{verbatim}
-
-\begin{verbatim}
-## 
-## Attaching package: 'ggimage'
-\end{verbatim}
-
-\begin{verbatim}
-## The following object is masked from 'package:ggpubr':
-## 
-##     theme_transparent
-\end{verbatim}
-
-\begin{verbatim}
-## The following object is masked from 'package:ggflags':
-## 
-##     geom_flag
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{require}\NormalTok{(magick)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## Loading required package: magick
-\end{verbatim}
-
-\begin{verbatim}
-## Linking to ImageMagick 6.9.11.34
-## Enabled features: cairo, freetype, fftw, ghostscript, lcms, pango, rsvg, webp
-## Disabled features: fontconfig, x11
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \NormalTok{Miss_final <-}\StringTok{ }\KeywordTok{vis_miss}\NormalTok{(hotels, }\DataTypeTok{warn_large_data =}\OtherTok{FALSE}\NormalTok{) }\CommentTok{# Check mssing value }
 \NormalTok{Miss_final}
 \end{Highlighting}
@@ -737,7 +559,7 @@
 \StringTok{  }\KeywordTok{filter}\NormalTok{(arrival_date_year }\OperatorTok{==}\StringTok{ }\DecValTok{2017}\NormalTok{) }\OperatorTok{%>%}
 \StringTok{  }\KeywordTok{filter}\NormalTok{(children }\OperatorTok{==}\StringTok{ }\DecValTok{0} \OperatorTok{&}\StringTok{ }\NormalTok{babies }\OperatorTok{==}\StringTok{ }\DecValTok{0}\NormalTok{) }\OperatorTok{%>%}
 \StringTok{  }\KeywordTok{filter}\NormalTok{(stays_in_week_nights }\OperatorTok{==}\StringTok{ }\DecValTok{5}\NormalTok{) }\OperatorTok{%>%}
-\StringTok{  }\KeywordTok{select}\NormalTok{(reservation_status_date, adr) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(reservation_status_date, adr) }\OperatorTok{%>%}
 \StringTok{  }\KeywordTok{arrange}\NormalTok{((adr)) }\OperatorTok{%>%}
 \StringTok{  }\KeywordTok{filter}\NormalTok{(adr }\OperatorTok{!=}\StringTok{ }\DecValTok{0}\NormalTok{) }\OperatorTok{%>%}
 \StringTok{  }\KeywordTok{head}\NormalTok{(}\DecValTok{10}\NormalTok{) }\OperatorTok{%>%}
@@ -799,7 +621,7 @@
 \NormalTok{             is_canceled }\OperatorTok{==}\StringTok{ }\DecValTok{0} \OperatorTok{~}\StringTok{ }\NormalTok{n}\OperatorTok{/}\NormalTok{total_bookings}
 \NormalTok{           )}
 \NormalTok{    ) }\OperatorTok{%>%}
-\StringTok{    }\KeywordTok{select}\NormalTok{(Country, total_bookings, }\KeywordTok{contains}\NormalTok{(}\StringTok{"perc"}\NormalTok{)) }\OperatorTok{%>%}
+\StringTok{    }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(Country, total_bookings, }\KeywordTok{contains}\NormalTok{(}\StringTok{"perc"}\NormalTok{)) }\OperatorTok{%>%}
 \StringTok{    }\KeywordTok{pivot_longer}\NormalTok{(}
       \DataTypeTok{cols =} \KeywordTok{contains}\NormalTok{(}\StringTok{"perc"}\NormalTok{),}
       \DataTypeTok{names_to =} \StringTok{"outcome"}\NormalTok{,}
@@ -1003,8 +825,11 @@
       \DataTypeTok{fillOpacity =} \DecValTok{1}\NormalTok{,}
       \DataTypeTok{color =} \OperatorTok{~}\KeywordTok{pal_fun}\NormalTok{(color_perc) }\CommentTok{# use the rate of each state to find the correct color}
 \NormalTok{    )}
+\NormalTok{  map}
 \end{Highlighting}
 \end{Shaded}
+
+\includegraphics{tidy_files/figure-latex/unnamed-chunk-6-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1083,7 +908,7 @@ the group customer is 577, which is 0.48\%.
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{dt1 <-final }\OperatorTok{%>%}
-\StringTok{  }\KeywordTok{select}\NormalTok{(hotel,customer_type) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(hotel,customer_type) }\OperatorTok{%>%}
 \StringTok{  }\KeywordTok{count}\NormalTok{(customer_type)}
 
 \CommentTok{# dt1 = dt1[order(dt1$n, decreasing = TRUE),]   }
@@ -1118,7 +943,7 @@ Therefore, it is recommended that the hotel, in terms of room type arrangements,
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{age1<-}\StringTok{ }\NormalTok{final}\OperatorTok{%>%}
-\StringTok{  }\KeywordTok{select}\NormalTok{(hotel,adults,children,babies) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(hotel,adults,children,babies) }\OperatorTok{%>%}
 \StringTok{  }\KeywordTok{filter}\NormalTok{(hotel}\OperatorTok{==}\StringTok{"Resort Hotel"}\NormalTok{) }\OperatorTok{%>%}
 \StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{all=}\NormalTok{adults}\OperatorTok{+}\NormalTok{children}\OperatorTok{+}\NormalTok{babies)}
 
@@ -1129,7 +954,7 @@ Therefore, it is recommended that the hotel, in terms of room type arrangements,
 \StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{"the density plot in resort-hotel"}\NormalTok{)}
 
 \NormalTok{age2<-}\StringTok{ }\NormalTok{final}\OperatorTok{%>%}
-\StringTok{  }\KeywordTok{select}\NormalTok{(hotel,adults,children,babies) }\OperatorTok{%>%}
+\StringTok{ }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(hotel,adults,children,babies) }\OperatorTok{%>%}
 \StringTok{  }\KeywordTok{filter}\NormalTok{(hotel}\OperatorTok{==}\StringTok{"City Hotel"}\NormalTok{) }\OperatorTok{%>%}
 \StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{all=}\NormalTok{adults}\OperatorTok{+}\NormalTok{children}\OperatorTok{+}\NormalTok{babies)}
 
@@ -1153,7 +978,7 @@ For city hotels, online advertising should be promoted, because people book more
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{ltime <-}\StringTok{ }\NormalTok{final }\OperatorTok{%>%}
-\StringTok{  }\KeywordTok{select}\NormalTok{(hotel,lead_time) }
+\StringTok{ }\NormalTok{dplyr}\OperatorTok{::}\StringTok{ }\KeywordTok{select}\NormalTok{(hotel,lead_time) }
   
 \NormalTok{q3<-}\KeywordTok{ggplot}\NormalTok{(ltime, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{lead_time))}\OperatorTok{+}
 \StringTok{  }\KeywordTok{geom_density}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{color=}\NormalTok{hotel),}\DataTypeTok{alpha=}\FloatTok{0.4}\NormalTok{)}\OperatorTok{+}
@@ -1172,7 +997,7 @@ Therefore, we recommend that hotels do more promotional activities during workda
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{night <-}\StringTok{ }\NormalTok{final  }\OperatorTok{%>%}
-\StringTok{  }\KeywordTok{select}\NormalTok{(hotel,stays_in_week_nights) }
+\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(hotel,stays_in_week_nights) }
   
 \NormalTok{n<-}\KeywordTok{ggplot}\NormalTok{(night, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{stays_in_week_nights))}\OperatorTok{+}
 \StringTok{  }\KeywordTok{geom_density}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{color=}\NormalTok{stays_in_week_nights),}\DataTypeTok{fill=}\StringTok{"red3"}\NormalTok{,}\DataTypeTok{alpha=}\FloatTok{0.4}\NormalTok{)}\OperatorTok{+}
@@ -1181,7 +1006,7 @@ Therefore, we recommend that hotels do more promotional activities during workda
 \StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Number of days to stay in the hotel on weekdays"}\NormalTok{)}
 
 \NormalTok{night1 <-}\StringTok{ }\NormalTok{final }\OperatorTok{%>%}
-\StringTok{  }\KeywordTok{select}\NormalTok{(hotel,stays_in_weekend_nights) }
+\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(hotel,stays_in_weekend_nights) }
   
 \NormalTok{n1<-}\KeywordTok{ggplot}\NormalTok{(night1, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{stays_in_weekend_nights))}\OperatorTok{+}
 \StringTok{  }\KeywordTok{geom_density}\NormalTok{(}\KeywordTok{aes}\NormalTok{(}\DataTypeTok{color=}\NormalTok{stays_in_weekend_nights),}\DataTypeTok{fill=}\StringTok{"green3"}\NormalTok{,}\DataTypeTok{alpha=}\FloatTok{0.4}\NormalTok{)}\OperatorTok{+}
@@ -1193,7 +1018,7 @@ Therefore, we recommend that hotels do more promotional activities during workda
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{tidy_files/figure-latex/unnamed-chunk-11-1.pdf}
+\includegraphics{tidy_files/figure-latex/unnamed-chunk-10-1.pdf}
 
 What month is the peak of the hotel?
 It can be seen from this chart that no matter what kind of hotel it is, April, August, and December are the peak periods for hotels.
@@ -1203,7 +1028,7 @@ For customers, we recommend avoiding travel during these three months, and being
 \begin{Shaded}
 \begin{Highlighting}[]
 \NormalTok{month <-}\StringTok{ }\NormalTok{final }\OperatorTok{%>%}
-\StringTok{  }\KeywordTok{select}\NormalTok{(hotel,arrival_date_month,arrival_date_year) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(hotel,arrival_date_month,arrival_date_year) }\OperatorTok{%>%}
 \StringTok{  }\KeywordTok{filter}\NormalTok{(hotel}\OperatorTok{==}\StringTok{"Resort Hotel"}\NormalTok{)}
   
 \NormalTok{mr<-}\KeywordTok{ggplot}\NormalTok{(month, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{arrival_date_month))}\OperatorTok{+}
@@ -1216,7 +1041,7 @@ For customers, we recommend avoiding travel during these three months, and being
 
 
 \NormalTok{month2 <-}\StringTok{ }\NormalTok{final }\OperatorTok{%>%}
-\StringTok{  }\KeywordTok{select}\NormalTok{(hotel,arrival_date_month,arrival_date_year) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(hotel,arrival_date_month,arrival_date_year) }\OperatorTok{%>%}
 \StringTok{  }\KeywordTok{filter}\NormalTok{(hotel}\OperatorTok{==}\StringTok{"City Hotel"}\NormalTok{)}
   
 \NormalTok{mc<-}\KeywordTok{ggplot}\NormalTok{(month2, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{arrival_date_month))}\OperatorTok{+}
@@ -1230,7 +1055,7 @@ For customers, we recommend avoiding travel during these three months, and being
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{tidy_files/figure-latex/unnamed-chunk-12-1.pdf}
+\includegraphics{tidy_files/figure-latex/unnamed-chunk-11-1.pdf}
 
 \begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
 
@@ -1239,34 +1064,6 @@ For customers, we recommend avoiding travel during these three months, and being
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(plotly)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## 
-## Attaching package: 'plotly'
-\end{verbatim}
-
-\begin{verbatim}
-## The following object is masked from 'package:ggplot2':
-## 
-##     last_plot
-\end{verbatim}
-
-\begin{verbatim}
-## The following object is masked from 'package:stats':
-## 
-##     filter
-\end{verbatim}
-
-\begin{verbatim}
-## The following object is masked from 'package:graphics':
-## 
-##     layout
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \NormalTok{month_}\DecValTok{2016}\NormalTok{ <-}\StringTok{ }\NormalTok{final }\OperatorTok{%>%}
 \StringTok{  }\KeywordTok{filter}\NormalTok{(arrival_date_year }\OperatorTok{==}\StringTok{ }\DecValTok{2016}\NormalTok{) }\OperatorTok{%>%}
 \StringTok{  }\KeywordTok{group_by}\NormalTok{(arrival_date_day_of_month, arrival_date_month, hotel) }\OperatorTok{%>%}
@@ -1282,7 +1079,7 @@ For customers, we recommend avoiding travel during these three months, and being
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{tidy_files/figure-latex/unnamed-chunk-13-1.pdf}
+\includegraphics{tidy_files/figure-latex/unnamed-chunk-12-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1295,30 +1092,17 @@ For customers, we recommend avoiding travel during these three months, and being
 \DataTypeTok{position =} \StringTok{"stack"}\NormalTok{) }\OperatorTok{+}\StringTok{ }
 \StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{"Month"}\NormalTok{) }\OperatorTok{+}
 \KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.text.x =} \KeywordTok{element_text}\NormalTok{(}\DataTypeTok{angle =} \DecValTok{90}\NormalTok{, }\DataTypeTok{vjust =} \FloatTok{0.5}\NormalTok{, }\DataTypeTok{hjust=}\DecValTok{1}\NormalTok{))}
+\NormalTok{month_book}
 \end{Highlighting}
 \end{Shaded}
+
+\includegraphics{tidy_files/figure-latex/unnamed-chunk-13-1.pdf}
 
 2.Comparing the most reserved season by different hotel types with different countries.
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(kableExtra)}
-\end{Highlighting}
-\end{Shaded}
-
-\begin{verbatim}
-## 
-## Attaching package: 'kableExtra'
-\end{verbatim}
-
-\begin{verbatim}
-## The following object is masked from 'package:dplyr':
-## 
-##     group_rows
-\end{verbatim}
-
-\begin{Shaded}
-\begin{Highlighting}[]
 \KeywordTok{library}\NormalTok{(dplyr)}
 \NormalTok{Top10Country <-}\StringTok{ }\NormalTok{final }\OperatorTok{%>%}
 \StringTok{  }\KeywordTok{count}\NormalTok{(Country, }\DataTypeTok{sort =}\NormalTok{ T) }\OperatorTok{%>%}
@@ -1330,7 +1114,7 @@ For customers, we recommend avoiding travel during these three months, and being
 
 \begin{table}
 
-\caption{\label{tab:unnamed-chunk-15}Top10 coutries reserved}
+\caption{\label{tab:unnamed-chunk-14}Top10 coutries reserved}
 \centering
 \begin{tabular}[t]{l|r}
 \hline
@@ -1502,6 +1286,106 @@ Both distributions in the density plots show a similar right skewed shape and th
 \end{verbatim}
 
 \includegraphics{tidy_files/figure-latex/Q12_2-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{booking <-}\StringTok{ }\NormalTok{final }\OperatorTok{%>%}\StringTok{ }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(lead_time,}
+\NormalTok{                                 adr,}
+\NormalTok{                                 is_canceled,}
+\NormalTok{                                 reserved_room_type,}
+\NormalTok{                                 assigned_room_type,}
+\NormalTok{                                 arr_date_month, Country) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(is_canceled }\OperatorTok{==}\StringTok{ }\DecValTok{0}\NormalTok{) }
+  \CommentTok{# mutate( change = ifelse(!reserved_room_type == assigned_room_type, 1,0),}
+  \CommentTok{#         reserved_room_type = case_when(reserved_room_type == "A" ~ 0,}
+  \CommentTok{#                                        reserved_room_type == "B" ~ 1,}
+  \CommentTok{#                                        reserved_room_type == "C" ~ 2,}
+  \CommentTok{#                                        reserved_room_type == "D" ~ 3,}
+  \CommentTok{#                                        reserved_room_type == "E" ~ 4,}
+  \CommentTok{#                                        reserved_room_type == "F" ~ 5,}
+  \CommentTok{#                                        reserved_room_type == "G" ~ 6,}
+  \CommentTok{#                                        reserved_room_type == "H" ~ 7,}
+  \CommentTok{#                                        reserved_room_type == "I" ~ 8),}
+  \CommentTok{#        assigned_room_type = case_when(assigned_room_type == "A" ~ 0,}
+  \CommentTok{#                                        assigned_room_type== "B" ~ 1,}
+  \CommentTok{#                                        assigned_room_type == "C" ~ 2,}
+  \CommentTok{#                                       assigned_room_type == "D" ~ 3,}
+  \CommentTok{#                                        assigned_room_type == "E" ~ 4,}
+  \CommentTok{#                                        assigned_room_type == "F" ~ 5,}
+  \CommentTok{#                                        assigned_room_type == "G" ~ 6,}
+  \CommentTok{#                                       assigned_room_type == "H" ~ 7,}
+  \CommentTok{#                                        assigned_room_type == "I" ~ 8)}
+  \CommentTok{#         )}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{type <-}\StringTok{ }\NormalTok{booking }\OperatorTok{%>%}\StringTok{ }
+\StringTok{   }\KeywordTok{filter}\NormalTok{(}\OperatorTok{!}\NormalTok{reserved_room_type }\OperatorTok{==}\StringTok{ }\NormalTok{assigned_room_type) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(lead_time, arr_date_month,reserved_room_type,assigned_room_type, Country) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{( }\DataTypeTok{name =} \StringTok{"Number"}\NormalTok{) }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{A <-}\StringTok{ }\NormalTok{type }\OperatorTok{%>%}\StringTok{ }\KeywordTok{filter}\NormalTok{( arr_date_month }\OperatorTok{==}\StringTok{ "10"}\NormalTok{,}
+\NormalTok{                      Country }\OperatorTok{==}\StringTok{ "United Kingdom"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{ggplot}\NormalTok{(type, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =} \KeywordTok{factor}\NormalTok{(arr_date_month), }\DataTypeTok{y =}\NormalTok{ lead_time, }\DataTypeTok{size =}\NormalTok{ Number)) }\OperatorTok{+}
+\StringTok{       }\KeywordTok{geom_point}\NormalTok{(}\DataTypeTok{shape =}\DecValTok{21}\NormalTok{, }\DataTypeTok{colour =} \StringTok{"#95CDF7"}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"#F8BBD0"}\NormalTok{) }\OperatorTok{+}\StringTok{    }
+\StringTok{     }\KeywordTok{scale_x_discrete}\NormalTok{( }\DataTypeTok{name =} \StringTok{"Month"}\NormalTok{ ) }\OperatorTok{+}
+\StringTok{     }\KeywordTok{scale_y_continuous}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{tidy_files/figure-latex/leadtimeplot-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{p <-}\StringTok{ }\KeywordTok{ggplot}\NormalTok{(A, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x=}\NormalTok{ reserved_room_type , }\DataTypeTok{y =} \KeywordTok{log}\NormalTok{(Number}\OperatorTok{*}\DecValTok{2}\NormalTok{), }\DataTypeTok{fill =}\NormalTok{ assigned_room_type)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_bar}\NormalTok{(}\DataTypeTok{stat =} \StringTok{"identity"}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{0.7}\NormalTok{) }\OperatorTok{+}
+\StringTok{ }\KeywordTok{theme_minimal}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_polar}\NormalTok{() }
+  
+
+\NormalTok{p  }
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{tidy_files/figure-latex/coordplot-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{interval_c <-}\StringTok{ }\NormalTok{plot_interval}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(hotel}\OperatorTok{==}\StringTok{"City Hotel"}\NormalTok{)}
+
+\NormalTok{interval_r <-}\StringTok{ }\NormalTok{plot_interval}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(hotel}\OperatorTok{==}\StringTok{"Resort Hotel"}\NormalTok{)}
+
+\NormalTok{plot_combined <-}\StringTok{ }\NormalTok{plot_interval}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ggplot}\NormalTok{(}\KeywordTok{aes}\NormalTok{(interval,}\DataTypeTok{fill=}\KeywordTok{as.factor}\NormalTok{(hotel)))}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_density}\NormalTok{(}\DataTypeTok{alpha=}\FloatTok{0.3}\NormalTok{)}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_vline}\NormalTok{(}\DataTypeTok{xintercept =} \KeywordTok{mean}\NormalTok{(interval_c}\OperatorTok{$}\NormalTok{interval),}
+             \DataTypeTok{colour =} \StringTok{"red"}\NormalTok{)}\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_vline}\NormalTok{(}\DataTypeTok{xintercept =} \KeywordTok{mean}\NormalTok{(interval_r}\OperatorTok{$}\NormalTok{interval),}
+             \DataTypeTok{colour =} \StringTok{"blue"}\NormalTok{)}\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{x=}\StringTok{"interval(day)"}\NormalTok{)}
+
+\NormalTok{plot_combined}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Don't know how to automatically pick scale for object of type difftime. Defaulting to continuous.
+\end{verbatim}
+
+\includegraphics{tidy_files/figure-latex/intervaldensity-1.pdf}
 
 \printbibliography
 
