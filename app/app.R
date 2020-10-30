@@ -158,7 +158,19 @@ Scroll through this interactive table to get a glipmse of the variables.")),
 br(),
 fluidRow(
                       DT::DTOutput("final")
-                      ))))
+                      ))),
+tabPanel("Source", "",
+         fluidPage(
+           fluidRow(
+             tags$iframe(
+               src = 'https://www.sciencedirect.com/science/article/pii/S2352340918315191#f0010',
+               width = '100%', height = '800px',
+               frameborder = 0, scrolling = 'auto'
+             )
+           )
+
+
+)))
     ),
     tabItem(tabName = "inputs",
             fluidRow(
