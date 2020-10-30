@@ -1020,31 +1020,30 @@ output$chen <- renderInfoBox({
 
 
 output$yuqi <- renderInfoBox({
-  ic <- apputils::icon(list(src = "https://chenjie-blog.netlify.app/author/chenjie-gong/avatar_hu52a603635ecebd45650b162dadabb4e5_12861_270x270_fill_q90_lanczos_center.jpg", width = "80px"), lib = "local")
+  ic <- apputils::icon(list(img src = "app/www/yuqi.jpg" width = "80px"), lib = "local")
 
   apputils::infoBox(
     title = "Yuqi Wang",
     subtitle = "Click on the box to contact me",
     color = "purple",
     width = "60px",
-    href= "https://practical-beaver-cc1776.netlify.app/index.html",
+    href= "https://practical-beaver-cc1776.netlify.app/",
     icon = ic
   )
 })
 
 output$yiwen <- renderInfoBox({
-  ic <- apputils::icon(list(src = "https://chenjie-blog.netlify.app/author/chenjie-gong/avatar_hu52a603635ecebd45650b162dadabb4e5_12861_270x270_fill_q90_lanczos_center.jpg", width = "80px"), lib = "local")
+  ic <- apputils::icon(list(src = "app/www/yuqi.jpg", width = "80px"), lib = "local")
 
   apputils::infoBox(
     title = "Yiwen Liu",
     subtitle = "Click on the box to contact me",
     color = "purple",
     width = "60px",
-    href= "https://awesome-wright-49670f.netlify.app/index.html?fbclid=IwAR2E7N9W0-vkSlOCEtrFBKdufePvResaCpEJyBM4C2Ae7a3fweSj3WoKFKA",
+    href= "https://awesome-wright-49670f.netlify.app/index.html",
     icon = ic
   )
 })
-
 
 
 
