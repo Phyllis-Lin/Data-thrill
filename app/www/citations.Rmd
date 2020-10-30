@@ -1,15 +1,38 @@
 ---
-title: "Citations"
-date: "26/10/2020"
-output: html_document
+title: "References"
+output: 
+  bookdown::html_document2:
+    theme: paper
 bibliography: references.bib
 ---
+
+
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## References
+The dataset used in this proect was download from r packages `tidytuesday`[@bichat] and written using R and `shiny`[@shin], the following packages were used to produce this project: `ggplot2`[@Springer], `countrycode`[@countrycode], `lubridate`[@date], `naniar`[@naria], `tidyverse`[@tidyverse], `calendR`[@calenr], `gridExtra`[@grid], `ggalluvial`[@ggal], `ggflags`[@flags],
+`ggpubr`[@ggoubr],`ggrepel`[@ggrepel], `ggtext`[@text], `ggthemes`[@themes], `ggTimeSeries`[@time], `hrbrthemes`[@hebr], `leaflet`[@leaf], `magrittr`[@magir], `patchwork`[@patch],`png`[@png], `RColorBrewer`[@rcolor], `rworldmap`[@andy], `transformr`[@trans], `tvthemes`[@tv], `waffle`[@waffle],`zoo`[@zoo],`ggimage`[@ggima], `magick`[@magik], `dplyr`[@dply], `kableExtra`[@kable], `DT`[@dt]
 
-[@kableExtra]
-[@dplyr]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

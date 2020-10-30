@@ -188,8 +188,7 @@ to_map <- final %>%
     filter(outcome == "perc_cancel")
 
 
-
-
+to_map$Country <- gsub(to_map$Country, pattern = "United States", replacement = "USA")
 
 
   mapCountry<- maps::map("world", fill = TRUE, plot = FALSE)
@@ -209,8 +208,9 @@ to_map <- final %>%
       stroke = FALSE,
       smoothFactor = 0.2,
       fillOpacity = 1,
-      color = ~pal_fun(color_perc) # use the rate of each state to find the correct color
+      color = ~pal_fun(color_perc)
     )
+
 
 
 
@@ -283,7 +283,8 @@ mod_aug <-mod %>%
 log <- ggplot(mod_aug, aes(x = stay_length, y = y_hat)) +
   geom_point() +
   geom_line() +
-  scale_y_continuous("Probability of cancelling booking", limits = c(0, 1))
+  scale_y_continuous("Probability of cancelling booking", limits = c(0, 1)) +
+  theme_clean()
 
 
 
@@ -566,6 +567,10 @@ type <- booking %>%
   count( name = "Number")
 
 
+leadplot <- ggplot(type, aes(x = factor(arr_date_month), y = lead_time, size = Number)) +
+  geom_point(shape =21, colour = "#95CDF7", fill = "#F8BBD0") +
+  scale_x_discrete( name = "Month" ) +
+  scale_y_continuous()
 
 interval_c <- plot_interval%>%
   filter(hotel=="City Hotel")
