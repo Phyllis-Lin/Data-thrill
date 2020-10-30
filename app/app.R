@@ -1033,8 +1033,7 @@ output$yuqi <- renderInfoBox({
 })
 
 output$yiwen <- renderInfoBox({
-  ic <- apputils::icon(list(src = "https://github.com/Phyllis-Lin/Data-thrill/blob/master/app/imges/yiwen.jpg?raw=true",width = "80px"), lib = "local")
-
+  ic <- apputils::icon(list(src = "https://github.com/Phyllis-Lin/Data-thrill/blob/master/app/imges/yi.jpg?raw=true", width = "80px"), lib = "local")
   apputils::infoBox(
     title = "Yiwen Liu",
     subtitle = "Click on the box to contact me",
