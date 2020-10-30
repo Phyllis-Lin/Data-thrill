@@ -18,7 +18,7 @@ header <- dashboardHeader(
     messageItem(
       from = HTML('<span style="color:purple;font-size:19px;">Data Thrills</span>'),
       message =  HTML('<span style="color:#FF7F50;font-size:14px;">Code available on this GitHub repo:</span>'),
-      href = "https://github.com/petestylianos/5510_project",
+      href = "https://github.com/Phyllis-Lin/Data-thrill",
       icon =  icon(name = "github",
                    class = "fa-3x fa-pull-left"),
       time = "today"
@@ -158,17 +158,7 @@ Scroll through this interactive table to get a glipmse of the variables.")),
 br(),
 fluidRow(
                       DT::DTOutput("final")
-                      ))),
-        tabPanel("Source", "",
-                 fluidPage(
-                   fluidRow(
-                     tags$iframe(
-                       src = 'https://www.sciencedirect.com/science/article/pii/S2352340918315191#f0010',
-                       width = '100%', height = '800px',
-                       frameborder = 0, scrolling = 'auto'
-                     )
-                   ),
-                 )))
+                      ))))
     ),
     tabItem(tabName = "inputs",
             fluidRow(
